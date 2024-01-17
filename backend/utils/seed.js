@@ -10,7 +10,7 @@ db.once('open', () => {
 
 const seedDb = async () => {
     await Bill.deleteMany({});
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 1; i++) {
         const name = `This is bill no. ${i}`;
         const date = new Date();
         const bill = new Bill({
