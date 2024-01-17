@@ -1,6 +1,6 @@
 .menucontainer {
     height: 50px;
-    background-color: aliceblue;
+    background-color: rgb(183, 247, 145);
     position: fixed;
     top: 0px;
     right: 0px;
@@ -8,8 +8,6 @@
     z-index: 30;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
-    display: flex;
-    flex-direction: row;
 }
 
 .logoimg {
@@ -17,12 +15,4 @@
     width: auto;
 }
 
-.itemcontainer {
-    margin-top: auto;
-    margin-bottom: auto;
-    width: 120px;
-    text-align: center;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 10pt;
-    color: black;
-}
+

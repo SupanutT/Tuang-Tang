@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import TopMenu from "../components/TopMenu";
 
-export default function HomeLayout ( { children }: { children: ReactNode } ) {
+export default function allBillLayout ( { children }: { children: ReactNode } ) {
     return (
         <div>
             <TopMenu />
