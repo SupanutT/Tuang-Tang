@@ -11,3 +11,4 @@ module.exports.createBill = async (req, res, next) => {
     await bill.save();
     res.send(bill._id);
 };
+
