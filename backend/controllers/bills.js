@@ -6,9 +6,8 @@ module.exports.showBill = async (req, res, next) => {
 };
 
 module.exports.createBill = async (req, res, next) => {
-    console.log(req.body);
-    console.log(req.file);
-    res.send(req.body);
-    // const bill = new Bill(req.body.bill);
-    // res.send({ bill });
+    const bill = new Bill({ ...req.body.bill, date: new Date() });
+    bill.image = { filename: req.file.filename, url: req.file.path };
+    await bill.save();
+    res.send(bill._id);
 };
