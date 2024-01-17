@@ -8,10 +8,7 @@ const upload = multer({ storage });
 
 router
     .route('/')
-    .post(upload.single('image'), (req, res) => {
-        console.log(req.body, req.file);
-        res.send(req.body);
-    });
+    .post(upload.single('image'), bills.createBill);
 
 router
     .route('/:id')

@@ -16,7 +16,10 @@ const seedDb = async () => {
         const bill = new Bill({
             name: name,
             date: date,
-            image_url: 'https://source.unsplash.com/random'
+            image: {
+                filename: 'image name',
+                url: 'https://source.unsplash.com/random'
+            }
         });
         await bill.save();
     }
