@@ -13,5 +13,19 @@ router
 router
     .route('/:id')
     .get(catchAsync(bills.showBill));
+    .post({
+        url: receiptOcrEndpoint,
+        formData: {
+            client_id: 'TEST',
+            recognizer: 'auto',
+            ref_no: 'ocr_nodejs_123',
+            file: fs.createReadStream(imageFile)
+        },
+    }, function (error, response, body) {
+        if (error) {
+            console.error(error);
+        }
+        console.log(body); // Receipt OCR result in JSON
+    });
 
 module.exports = router;
