@@ -1,7 +1,15 @@
+// if (process.env.NODE_ENV !== 'production') {
+//     require('dotenv').config();
+// }
+
+require('dotenv').config();
+
 const mongoose = require('mongoose');
 const Bill = require('../models/bill');
 
-mongoose.connect('mongodb://127.0.0.1:27017/tuang-tang', {});
+// const dbUrl = process.env.DB_URL;
+// console.log(dbUrl);
+mongoose.connect(dbUrl, {});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
@@ -10,7 +18,7 @@ db.once('open', () => {
 
 const seedDb = async () => {
     await Bill.deleteMany({});
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 10; i++) {
         const name = `This is bill no. ${i}`;
         const date = new Date();
         const bill = new Bill({
