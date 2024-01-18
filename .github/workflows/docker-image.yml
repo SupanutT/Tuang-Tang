@@ -38,7 +38,7 @@ jobs:
       - name: Push Docker Compose services
         uses: isbang/compose-action@v1.5.1
         with :
-          compose-flags: "up"
+          compose-flags: "push"
 
     #  - name: Clean up
       #  run: docker-compose down
