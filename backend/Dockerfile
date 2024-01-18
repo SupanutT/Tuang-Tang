@@ -6,6 +6,8 @@ COPY . .
 
 RUN npm install
 
+ENV DB_URL=${DB_URL}
+
 EXPOSE 80
 
 CMD ["node", "server"]
