@@ -3,8 +3,8 @@ name: Docker Compose CI/CD
 on:
   push:
     branches:
-      - dev-back 
-      
+      - dev-back  # Change this to your main branch name
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -23,6 +23,7 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
         run: |
-          docker-compose -f docker-compose.yml build backendnodeapp
+          cd backend  # Change to the backend directory
+          docker-compose build backendnodeapp
           echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-          docker-compose -f docker-compose.yml push backendnodeapp
+          docker-compose push backendnodeapp
