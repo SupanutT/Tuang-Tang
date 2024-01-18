@@ -36,7 +36,9 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Push Docker Compose services
-        run: docker-compose push
+        uses: isbang/compose-action@v1.5.1
+        with :
+          compose-flags: "up"
 
-      - name: Clean up
-        run: docker-compose down
+    #  - name: Clean up
+      #  run: docker-compose down
