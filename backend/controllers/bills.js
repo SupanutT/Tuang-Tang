@@ -5,6 +5,11 @@ module.exports.showBill = async (req, res, next) => {
     res.send({ bill });
 };
 
+module.exports.showAllBill = async (req, res, next) => {
+    const bills = await Bill.findOne({ name: 'This is bill no. 0' });
+    res.send({ bills });
+};
+
 module.exports.createBill = async (req, res, next) => {
     const bill = new Bill({ ...req.body.bill, date: new Date() });
     bill.image = { filename: req.file.filename, url: req.file.path };
