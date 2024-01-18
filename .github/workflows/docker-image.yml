@@ -1,29 +1,47 @@
-name: Docker Compose CI/CD
+name: Docker Compose CI
 
 on:
   push:
-    branches:
-      - dev-back  # Change this to your main branch name
+    branches: [ "dev-back" ]
+  pull_request:
+    branches: [ "dev" ]
 
 jobs:
-  build-and-push:
+  build:
+    name: Build and Test
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Set up Docker Compose
-        run: |
-          sudo rm /usr/local/bin/docker-compose
-          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
+      - name: Docker Compose Action              
+        uses: isbang/compose-action@v1.5.1
 
-      - name: Build and Push Docker Image
-        env:
-          DOCKER_BUILDKIT: 1
+      # - name: Clean up
+      #   run: docker-compose -f docker-compose.yml down
+
+  deploy:
+    name: Deploy to Docker Hub
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Build Docker Image
         run: |
-          cd backend  # Change to the backend directory
-          docker-compose build backendnodeapp
-          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-          docker-compose push backendnodeapp
+          cd backend
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/tuang-tang-backendnodeapp
+
+      - name: Push Docker Image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/tuang-tang-backendnodeapp
+
+    #  - name: Clean up
+      #  run: docker-compose down
