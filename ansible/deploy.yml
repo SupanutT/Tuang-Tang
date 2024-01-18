@@ -12,6 +12,12 @@
       docker_login:
         username: "{{ dockerhub_username }}"
         password: "{{ dockerhub_token }}"
+
+    - name: Stop and remove existing containers
+      docker_container:
+        name: backendnodeapp
+        state: absent
+        
     - name: Remove existing Docker image
       docker_image:
         name: "{{ app_image }}"
@@ -21,11 +27,6 @@
       docker_image:
         name: "{{ app_image }}"
         source: pull
-
-    - name: Stop and remove existing containers
-      docker_container:
-        name: backendnodeapp
-        state: absent
 
     - name: Run Docker container
       docker_container:
