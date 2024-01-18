@@ -36,7 +36,10 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Push Docker Compose services
-        run: docker-compose -f docker-compose.yml push
+        run: |
+          docker ps -a
+          docker images
+          docker-compose -f docker-compose.yml push
 
     #  - name: Clean up
       #  run: docker-compose down
