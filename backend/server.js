@@ -32,6 +32,9 @@ app.use('/', (req, res) => {
 app.use('/home', (req, res) => {
     res.send('HI!');
 });
+app.use('/test', (req, res) => {
+    res.send('YAY!');
+});
 
 app.use('/index', (req, res) => {
     res.render('index.html');
