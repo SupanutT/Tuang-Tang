@@ -12,7 +12,12 @@ module.exports.showAllBill = async (req, res, next) => {
 
 module.exports.createBill = async (req, res, next) => {
     const bill = new Bill({ ...req.body.bill, date: new Date() });
-    bill.image = { filename: req.file.filename, url: req.file.path };
+    try {
+        bill.image = { filename: req.file.filename, url: req.file.path };
+    } catch (e) {
+        console.error(e);
+        return res.send('Image is NOT uploaded. Please try again!');
+    }
     await bill.save();
     res.send(bill._id);
 };
