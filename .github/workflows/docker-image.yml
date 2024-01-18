@@ -30,8 +30,8 @@ jobs:
         name: Build and psuh
         uses: docker/build-push-action@v4
         with:
-          context: .
-          file: ./Dockerfile
+          context: ./backend
+          file: /Dockerfile
           push: true
           tags: supanuttangsin/tuang-tang-backendnodeapp:latest
           
