@@ -6,7 +6,7 @@ module.exports.showBill = async (req, res, next) => {
 };
 
 module.exports.showAllBill = async (req, res, next) => {
-    const bills = await Bill.findOne({ name: 'This is bill no. 0' });
+    const bills = await Bill.find();
     res.send({ bills });
 };
 

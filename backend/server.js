@@ -33,4 +33,4 @@ app.use('/index', (req, res) => {
     res.render('index.html');
 });
 
-app.use('/bills/', billRoutes);
+app.use('/api/bills/', billRoutes);
