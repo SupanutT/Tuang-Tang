@@ -42,7 +42,7 @@ jobs:
         run: |
           cd backend
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/tuang-tang-backendnodeapp \
-          --build-arg DB_URL=$(cat .env | grep DB_URL | cut -d'=' -f2) \
+          --build-arg DB_URL=${{ secrets.DB_URL }} \
           .
 
       - name: Push Docker Image
