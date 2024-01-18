@@ -58,10 +58,11 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          rm -f ~/.ssh/known_hosts
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa.pem
+          chmod 600 ~/.ssh/id_rsa.pem
       - name: Check Connection
-        run: ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_INSTANCE_IP }}
+        run: ssh -i ~/.ssh/id_rsa.pem ubuntu@${{ secrets.EC2_INSTANCE_IP }}
 
       - name: Deploy with Ansible
         env:
@@ -69,4 +70,4 @@ jobs:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           ansible-galaxy collection install community.general
-          ansible-playbook -i ${{ secrets.EC2_INSTANCE_IP }}, -u ubuntu -e "dockerhub_username=${DOCKERHUB_USERNAME} dockerhub_token=${DOCKERHUB_TOKEN}" -v ansible/deploy.yml --private-key=~/.ssh/id_rsa -k
+          ansible-playbook -i ${{ secrets.EC2_INSTANCE_IP }}, -u ubuntu -e "dockerhub_username=${DOCKERHUB_USERNAME} dockerhub_token=${DOCKERHUB_TOKEN}" -v ansible/deploy.yml --private-key=~/.ssh/id_rsa.pem -k
