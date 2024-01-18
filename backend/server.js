@@ -26,9 +26,6 @@ db.once('open', () => {
 app.listen(80, () => console.log('Listening to PORT 80'));
 app.use(cors());
 
-app.use('/', (req, res) => {
-    res.send('BACKEND SIDE!');
-});
 app.use('/home', (req, res) => {
     res.send('HI!');
 });
@@ -41,3 +38,7 @@ app.use('/index', (req, res) => {
 });
 
 app.use('/api/bills/', billRoutes);
+
+app.use('/', (req, res) => {
+    res.send('BACKEND SIDE!');
+});
