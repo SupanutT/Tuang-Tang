@@ -130,4 +130,4 @@ dist
 .pnp.*
 
 # Seed file
-backend/utils/seed.js
+seed.js
