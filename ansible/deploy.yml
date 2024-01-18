@@ -12,7 +12,11 @@
       docker_login:
         username: "{{ dockerhub_username }}"
         password: "{{ dockerhub_token }}"
-
+    - name: Remove existing Docker image
+      docker_image:
+        name: "{{ app_image }}"
+        state: absent
+    
     - name: Pull the latest Docker image
       docker_image:
         name: "{{ app_image }}"
