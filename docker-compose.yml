@@ -12,5 +12,6 @@ services:
     build:
       context: ./backend
       dockerfile: /Dockerfile
+    container_name: "backendnodeapp"
     ports:
       - "80:80"

@@ -7,7 +7,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const Bill = require('../models/bill');
 
-// const dbUrl = process.env.DB_URL;
+// const dbUrl = 'mongodb+srv://db-admin:hzzdEESw1fxmXGpf@tuang-tang.jvf7i1x.mongodb.net/?retryWrites=true&w=majority';
 // console.log(dbUrl);
 mongoose.connect(dbUrl, {});
 const db = mongoose.connection;
