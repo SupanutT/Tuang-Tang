@@ -1,5 +1,5 @@
 
-import Link from 'next/link'
+import Link from 'next/link';
 
 export default function TopMenuItem( { title, pageRef, side }: { title: string, pageRef: string, side: string }){
 

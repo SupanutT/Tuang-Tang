@@ -4,7 +4,7 @@ import AddBill from "@/app/components/AddBill";
 export default function MyBill(){
     return (
         <main className="mt-[50px]">
-            <BillList who="My"/>
+            <BillList who="my"/>
             <AddBill />
         </main>
     );
