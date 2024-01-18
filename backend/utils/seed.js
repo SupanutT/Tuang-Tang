@@ -7,9 +7,9 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const Bill = require('../models/bill');
 
-// const dbUrl = 'mongodb+srv://db-admin:hzzdEESw1fxmXGpf@tuang-tang.jvf7i1x.mongodb.net/?retryWrites=true&w=majority';
+// const dbUrl = '';
 // console.log(dbUrl);
-mongoose.connect(dbUrl, {}); d;
+mongoose.connect(dbUrl, {});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
