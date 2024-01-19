@@ -81,6 +81,5 @@ jobs:
           git config --global user.email "supanut.tangsin@gmail.com"
           git config --global user.name "SupanutT"
           git fetch origin prod:prod
-          git checkout origin/prod -- backend
-          git commit -am "merge from dev-back"
+          git merge --no-ff dev -m "Merge from dev-back branch"
           git push origin prod
