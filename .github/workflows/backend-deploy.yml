@@ -79,6 +79,6 @@ jobs:
         if: success()  # Only run if the previous steps are successful
         run: |
           git fetch origin prod:prod
-          git checkout prod
-          git merge --no-ff dev-back -m "Merge from dev-back branch"
+          git checkout origin/prod -- backend
+          git commit -am "merge from dev-back"
           git push origin prod
