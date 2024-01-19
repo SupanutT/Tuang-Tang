@@ -8,7 +8,7 @@ on:
 jobs:
 
   build-and-dockerhub-deploy:
-    if: contains(${{ github.event.head_commit.message }}, 'backend')
+    if: contains(github.event.head_commit.message, 'backend')
     name: Deploy to Docker Hub
     runs-on: ubuntu-latest
     
