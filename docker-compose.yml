@@ -1,10 +1,18 @@
 version: '3.1'
 services:
-  backendnodeapp:
+  frontendnodeapp:
     build:
-      context: ./backend
+      context: ./frontend
       dockerfile: /Dockerfile
-    image: supanuttangsin/tuang-tang-backendnodeapp
-    container_name: backendnodeapp
+    image: test-frontend-docker
+    container_name: frontendnodeapp
     ports:
-      - "80:80"
+      - "3000:3000"
+  # backendnodeapp:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: /Dockerfile
+  #   image: supanuttangsin/tuang-tang-backendnodeapp
+  #   container_name: backendnodeapp
+  #   ports:
+  #     - "80:80"
