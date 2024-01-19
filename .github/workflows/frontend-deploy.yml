@@ -26,6 +26,12 @@ jobs:
       - name: Configure Docker
         run: |
           gcloud auth configure-docker ${{ env.REGION }}.pkg.dev
+          
+      - name: Debug Information
+        run: |
+          echo "Artifact Registry Location: ${{ env.GAR_LOCATION }}"
+          gcloud auth list
+          docker info
 
       - name: Build and Push to Artifact Registry
         run: |
