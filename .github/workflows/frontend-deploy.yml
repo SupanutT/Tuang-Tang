@@ -29,9 +29,6 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           workload_identity_provider: projects/975321401382/locations/global/workloadIdentityPools/githubactions/providers/github
           service_account: github-actions@tuang-tang-411710.iam.gserviceaccount.com
-          
-      - name: Set Up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
 
       - name: Configure Docker
         run: |
