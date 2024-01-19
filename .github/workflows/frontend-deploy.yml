@@ -34,7 +34,7 @@ jobs:
 
       - name: Configure Docker
         run: |
-          gcloud auth configure-docker us-east1-docker.pkg.dev
+          gcloud auth configure-docker us-central1-docker.pkg.dev
           # gcloud auth configure-docker ${{ env.REGION }}.pkg.dev
           
       - name: Debug Information
@@ -42,6 +42,10 @@ jobs:
           echo "Artifact Registry Location: ${{ env.GAR_LOCATION }}"
           gcloud auth list
           docker info
+          
+      - name: List Artifact Registry Repositories
+        run: |
+          docker search ${{ env.GAR_LOCATION }}
 
       - name: Build and Push to Artifact Registry
         run: |
