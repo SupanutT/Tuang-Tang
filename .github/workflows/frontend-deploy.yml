@@ -26,6 +26,7 @@ jobs:
 
       - name: Build and Push to Artifact Registry
         run: |
+          cd frontend
           docker build -t us-central1-docker.pkg.dev/tuang-tang-411710/tuang-tang-frontendnextapp/tuang-tang-frontendnextapp-image:latest .
           docker push us-central1-docker.pkg.dev/tuang-tang-411710/tuang-tang-frontendnextapp/tuang-tang-frontendnextapp-image:latest
 
