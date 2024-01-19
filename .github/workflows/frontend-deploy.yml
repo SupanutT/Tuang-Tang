@@ -45,6 +45,7 @@ jobs:
       - name: Build and Push to Artifact Registry
         run: |
           cd frontend
+          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://us-central1-docker.pkg.dev
           docker build -t ${{ env.GAR_LOCATION }} .
           docker push ${{ env.GAR_LOCATION }}
 
