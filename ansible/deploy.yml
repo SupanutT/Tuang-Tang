@@ -1,0 +1,37 @@
+---
+- name: Deploy Docker Compose Stack
+  hosts: all
+  become: true
+  vars:
+    dockerhub_username: "{{ lookup('env', 'DOCKERHUB_USERNAME') }}"
+    dockerhub_token: "{{ lookup('env', 'DOCKERHUB_TOKEN') }}"
+    app_image: "{{ dockerhub_username }}/tuang-tang-backendnodeapp:latest"
+
+  tasks:
+    - name: Log in to Docker Hub
+      docker_login:
+        username: "{{ dockerhub_username }}"
+        password: "{{ dockerhub_token }}"
+
+    - name: Stop and remove existing containers
+      docker_container:
+        name: backendnodeapp
+        state: absent
+        
+    - name: Remove existing Docker image
+      docker_image:
+        name: "{{ app_image }}"
+        state: absent
+    
+    - name: Pull the latest Docker image
+      docker_image:
+        name: "{{ app_image }}"
+        source: pull
+
+    - name: Run Docker container
+      docker_container:
+        name: backendnodeapp
+        image: "{{ app_image }}"
+        ports:
+          - "80:80"
+        detach: true
