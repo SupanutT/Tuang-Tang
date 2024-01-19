@@ -29,7 +29,7 @@ app.use(cors());
 app.use('/home', (req, res) => {
     res.send('HI!');
 });
-app.use('/testCICD', (req, res) => {
+app.use('/cicd', (req, res) => {
     res.send('YAY!');
 });
 
