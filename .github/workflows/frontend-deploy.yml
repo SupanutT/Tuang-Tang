@@ -43,6 +43,7 @@ jobs:
       - name: Build and Push to Artifact Registry
         run: |
           cd frontend
+          gcloud config set account "$(gcloud auth list --filter=status:ACTIVE --format='value(account)')"
           docker build -t ${{ env.GAR_LOCATION }} .
           docker push ${{ env.GAR_LOCATION }}
 
