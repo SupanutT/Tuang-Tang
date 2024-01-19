@@ -45,8 +45,7 @@ jobs:
           
       - name: List Artifact Registry Repositories
         run: |
-          gcloud auth login
-          docker search ${{ env.GAR_LOCATION }}
+          gcloud artifacts repositories list --location=${{ env.REGION }} --project=${{ secrets.GCP_PROJECT_ID }}
 
       - name: Build and Push to Artifact Registry
         run: |
