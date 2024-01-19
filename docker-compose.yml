@@ -4,15 +4,16 @@ services:
     build:
       context: ./frontend
       dockerfile: /Dockerfile
-    image: test-frontend-docker
-    container_name: frontendnodeapp
+    image: test-frontend-docker-build
+    container_name: frontendnextapp
     ports:
       - "3000:3000"
-  # backendnodeapp:
-  #   build:
-  #     context: ./backend
-  #     dockerfile: /Dockerfile
-  #   image: supanuttangsin/tuang-tang-backendnodeapp
-  #   container_name: backendnodeapp
-  #   ports:
-  #     - "80:80"
+      
+  backendnodeapp:
+    build:
+      context: ./backend
+      dockerfile: /Dockerfile
+    image: test-frontend-docker-build
+    container_name: backendnodeapp
+    ports:
+      - "80:80"
