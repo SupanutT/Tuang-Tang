@@ -3,7 +3,7 @@ name: Front-end CI/CD
 on:
   push:
     branches:
-      - dev
+      - prod
 
 env:
   REGION: us-central1
