@@ -7,23 +7,10 @@ on:
 
 jobs:
 
-  build-and-test:
-  
-    name: Build and Test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Docker Compose Action              
-        uses: isbang/compose-action@v1.5.1
-
-  dockerhub-deploy:
+  build-and-dockerhub-deploy:
   
     name: Deploy to Docker Hub
     runs-on: ubuntu-latest
-    needs: build-and-test
     
     steps:
       - name: Checkout Repository
@@ -48,7 +35,7 @@ jobs:
   ec2-deploy:
     name: Deploy to EC2
     runs-on: ubuntu-latest
-    needs: dockerhub-deploy
+    needs: build-and-dockerhub-deploy
     
     steps:
     
