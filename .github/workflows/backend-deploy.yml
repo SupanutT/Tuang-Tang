@@ -2,7 +2,8 @@ name: Back-end CI/CD
 
 on:
   push:
-    branches: 'dev-back->dev'
+    branches: 
+      - 'dev-back->dev'
 
 jobs:
 
