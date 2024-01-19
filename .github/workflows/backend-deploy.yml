@@ -75,11 +75,23 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Auto Merge to Prod
-        if: success()  # Only run if the previous steps are successful
+      - name: Install GitHub CLI
         run: |
-          git config --global user.email "supanut.tangsin@gmail.com"
-          git config --global user.name "SupanutT"
-          git fetch origin prod:prod
-          git merge --no-ff dev -m "Merge from dev-back branch"
-          git push origin prod
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+          sudo apt-add-repository -y https://cli.github.com/packages
+          sudo apt update
+          sudo apt install gh
+
+      - name: Create and Merge PR
+        run: |
+          # Create a pull request
+          gh pr create --base prod --head dev-back --title "Auto-PR" --body "Automatically created PR"
+
+          # Wait for the PR to be created
+          sleep 10
+
+          # Merge the PR
+          gh pr merge --auto --squash --delete-branch
+
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
