@@ -25,7 +25,7 @@ jobs:
         name: GCP Authentication
         uses: google-github-actions/auth@v2.0.1
         with:
-          project_id: ${{ GCP_PROJECT_ID }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
           workload_identity_provider: projects/975321401382/locations/global/workloadIdentityPools/githubactions/providers/github
           service_account: github-actions@tuang-tang-411710.iam.gserviceaccount.com
           
