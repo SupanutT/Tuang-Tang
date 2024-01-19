@@ -1,0 +1,96 @@
+name: Back-end CI/CD
+
+on:
+  push:
+    branches: 
+      - dev
+
+jobs:
+
+  build-and-test:
+  
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Docker Compose Action              
+        uses: isbang/compose-action@v1.5.1
+
+  dockerhub-deploy:
+  
+    name: Deploy to Docker Hub
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Build Docker Image
+        run: |
+          cd backend
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/tuang-tang-backendnodeapp \
+          --build-arg DB_URL="${{ secrets.DB_URL }}" \
+          .
+
+      - name: Push Docker Image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/tuang-tang-backendnodeapp
+        
+  ec2-deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    needs: dockerhub-deploy
+    
+    steps:
+    
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Ansible
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ansible
+          
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          rm -f ~/.ssh/known_hosts
+          ssh-keyscan -t rsa ${{ secrets.EC2_INSTANCE_IP }} >> ~/.ssh/known_hosts
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa.pem
+          chmod 600 ~/.ssh/id_rsa.pem
+          cat ~/.ssh/id_rsa.pem
+          
+      - name: Check Connection
+        run: ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.pem ubuntu@${{ secrets.EC2_INSTANCE_IP }}
+
+      - name: Deploy with Ansible
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          ansible-galaxy collection install community.general
+          ansible-playbook -i ${{ secrets.EC2_INSTANCE_IP }}, -u ubuntu -e "dockerhub_username=${DOCKERHUB_USERNAME} dockerhub_token=${DOCKERHUB_TOKEN}" -v ansible/deploy.yml --private-key=~/.ssh/id_rsa.pem -k --connection=ssh
+  
+  merge-to-prod:
+    runs-on: ubuntu-latest
+    needs: ec2-deploy
+    
+    steps:
+      - name: Checkout Repository
+      - uses: actions/checkout@v2
+
+      - name: Auto Merge to Prod
+        if: success()  # Only run if the previous steps are successful
+        run: |
+          git checkout prod
+          git merge --no-ff dev -m "Merge from dev branch"
+          git push origin prod
