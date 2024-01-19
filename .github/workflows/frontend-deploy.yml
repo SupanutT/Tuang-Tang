@@ -45,6 +45,7 @@ jobs:
           
       - name: List Artifact Registry Repositories
         run: |
+          gcloud auth login
           docker search ${{ env.GAR_LOCATION }}
 
       - name: Build and Push to Artifact Registry
