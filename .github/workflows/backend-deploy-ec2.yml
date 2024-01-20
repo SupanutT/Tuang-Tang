@@ -1,68 +1,68 @@
-# name: Back-end CI/CD (unused)
+name: Back-end CI/CD (unused)
 
-# on:
-#   push:
-#     branches: 
-#       - prod
+on:
+  push:
+    branches: 
+      - none
 
-# jobs:
+jobs:
 
-#   build-and-dockerhub-deploy:
-#     if: contains(github.event.head_commit.message, 'backend')
-#     name: Deploy to Docker Hub
-#     runs-on: ubuntu-latest
+  build-and-dockerhub-deploy:
+    if: contains(github.event.head_commit.message, 'backend')
+    name: Deploy to Docker Hub
+    runs-on: ubuntu-latest
     
-#     steps:
-#       - name: Checkout Repository
-#         uses: actions/checkout@v2
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-#       - name: Login to Docker Hub
-#         uses: docker/login-action@v2
-#         with:
-#           username: ${{ secrets.DOCKERHUB_USERNAME }}
-#           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
           
-#       - name: Build Docker Image
-#         run: |
-#           cd backend
-#           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/tuang-tang-backendnodeapp \
-#           --build-arg DB_URL="${{ secrets.DB_URL }}" \
-#           .
+      - name: Build Docker Image
+        run: |
+          cd backend
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/tuang-tang-backendnodeapp \
+          --build-arg DB_URL="${{ secrets.DB_URL }}" \
+          .
 
-#       - name: Push Docker Image
-#         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/tuang-tang-backendnodeapp
+      - name: Push Docker Image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/tuang-tang-backendnodeapp
         
-#   ec2-deploy:
-#     name: Deploy to EC2
-#     runs-on: ubuntu-latest
-#     needs: build-and-dockerhub-deploy
+  ec2-deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    needs: build-and-dockerhub-deploy
     
-#     steps:
+    steps:
     
-#       - name: Checkout Repository
-#         uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-#       - name: Install Ansible
-#         run: |
-#           sudo apt-get update
-#           sudo apt-get install -y ansible
+      - name: Install Ansible
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ansible
           
-#       - name: Set up SSH
-#         run: |
-#           mkdir -p ~/.ssh
-#           rm -f ~/.ssh/known_hosts
-#           ssh-keyscan -t rsa ${{ secrets.EC2_INSTANCE_IP }} >> ~/.ssh/known_hosts
-#           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa.pem
-#           chmod 600 ~/.ssh/id_rsa.pem
-#           cat ~/.ssh/id_rsa.pem
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          rm -f ~/.ssh/known_hosts
+          ssh-keyscan -t rsa ${{ secrets.EC2_INSTANCE_IP }} >> ~/.ssh/known_hosts
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa.pem
+          chmod 600 ~/.ssh/id_rsa.pem
+          cat ~/.ssh/id_rsa.pem
           
-#       - name: Check Connection
-#         run: ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.pem ubuntu@${{ secrets.EC2_INSTANCE_IP }}
+      - name: Check Connection
+        run: ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.pem ubuntu@${{ secrets.EC2_INSTANCE_IP }}
 
-#       - name: Deploy with Ansible
-#         env:
-#           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-#           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-#         run: |
-#           ansible-galaxy collection install community.general
-#           ansible-playbook -i ${{ secrets.EC2_INSTANCE_IP }}, -u ubuntu -e "dockerhub_username=${DOCKERHUB_USERNAME} dockerhub_token=${DOCKERHUB_TOKEN}" -v ansible/deploy.yml --private-key=~/.ssh/id_rsa.pem -k --connection=ssh
+      - name: Deploy with Ansible
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          ansible-galaxy collection install community.general
+          ansible-playbook -i ${{ secrets.EC2_INSTANCE_IP }}, -u ubuntu -e "dockerhub_username=${DOCKERHUB_USERNAME} dockerhub_token=${DOCKERHUB_TOKEN}" -v ansible/deploy.yml --private-key=~/.ssh/id_rsa.pem -k --connection=ssh
