@@ -1,15 +1,13 @@
 
 import Link from 'next/link';
 
-export default function TopMenuItem( { title, pageRef, side }: { title: string, pageRef: string, side: string }){
-
-    const sideClass = side=="left" ? "": "absolute right-0";
+export default function TopMenuItem( { title, pageRef }: { title: string, pageRef: string } ){
 
     return (
-        <div className={`w-[80px] h-[100%] mt-auto mb-auto font-sans text-sm text-black ${sideClass} hover:bg-yellow-100 flex justify-center items-center cursor-pointer` }>
-            <Link href={`/${pageRef}` } >
+        <Link href={`/${pageRef}` } className={`px-[10px] h-[100%] hover:bg-yellow-100 flex justify-center items-center`} >
+            <div className={`font-serif text-sm text-black cursor-pointer` }>
                 {title}
-            </Link>
-        </div>
+            </div>
+        </Link>
     );
 }

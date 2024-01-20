@@ -26,7 +26,7 @@ export default function BillList( { who }: { who: string } ) {
     return (
         <div className="flex flex-row justify-evenly content-evenly flex-wrap gap-x-5">
             {Data.map((billItem)=>(
-                <Link href={`/${who}bill/${billItem.bid}`} className="w-1/6">
+                <Link href={`/${who}bill/${billItem.bid}`} className="w-1/6 mt-[40px]">
                     <BillCard bid={billItem.bid} billName={billItem.name} />
                 </Link>
             ))}

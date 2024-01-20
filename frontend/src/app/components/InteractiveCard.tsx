@@ -9,8 +9,8 @@ export default function InteractiveCard ( { children, bid, contentName }: { chil
     }
 
     return (
-        <div id={bid} className="w-full h-[250px] rounded-lg shadow-lg bg-stone-200 mt-[40px] hover:shadow-2xl hover:shadow-lime-100"
-            onClick={ () => onBillSelected() }
+        <div id={bid} className="w-full h-[250px] rounded-lg shadow-lg bg-stone-200 hover:shadow-2xl hover:shadow-lime-100"
+            onClick={ () => onBillSelected()  }
         >
             { children }
         </div>
