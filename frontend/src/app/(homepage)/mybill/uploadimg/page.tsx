@@ -17,27 +17,33 @@ export default function UploadImg(){
     async function handleFileUpload() {
         if(selectedFile){
             // Handle successful selectedFile from user
-            const formData = new FormData();
-            formData.append('image', selectedFile);
+            if(process.env.NEXT_PUBLIC_BACKEND_API){
 
-            try {
-                const response = await fetch('http://44.196.234.22/api/bills', {
-                    method: 'POST',
-                    body: formData,
-                });
+                const formData = new FormData();
+                formData.append('image', selectedFile);
 
-                if(response.ok){
-                    // Handle successful response from the backend
-                    const data = await response.json();
-                    console.log(response);
-                }else{
-                    // Handle error response from the backend
-                    console.error('Error:', response.status, response.statusText);
+                try {
+                    const response = await fetch( `${process.env.NEXT_PUBLIC_BACKEND_API}/api/bills`, {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if(response.ok){
+                        // Handle successful response from the backend
+                        const data = await response.json();
+                        console.log(response);
+                    }else{
+                        // Handle error response from the backend
+                        console.error('Error:', response.status, response.statusText);
+                    }
+                } catch (error) {
+                    // Handle network errors
+                    console.log('Network error:', error);
                 }
-            } catch (error) {
-                // Handle network errors
-                console.log('Network error:', error);
+            }else{
+                console.error('NEXT_PUBLIC_API_IMG environment variable is not defined.');
             }
+
         }else{
             // User not upload file or selectedFile is not keep file change
             console.error('No file selected');
@@ -47,7 +53,7 @@ export default function UploadImg(){
     return (
         <main className="mt-[100px] w-[100%] flex items-center justify-center flex-col">
             <div className="w-1/2 ">
-                <form action="http://44.196.234.22/api/bills" method="POST" encType="multipart/form-data" className='flex flex-col justify-center items-center'>
+                <form action={`${process.env.NEXT_PUBLIC_BACKEND_API}/api/bills`} method="POST" encType="multipart/form-data" className='flex flex-col justify-center items-center'>
 
                     <label htmlFor="dropzone-file"
                         className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-500 border-dashed rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300  ">
