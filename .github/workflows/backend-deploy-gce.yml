@@ -1,0 +1,55 @@
+name: Back-end CI/CD
+
+on:
+  push:
+    branches:
+      - prod
+
+env:
+  REGION: us-central1
+
+jobs:
+        
+  build-and-gar-with-gce-deploy:
+    if: contains(github.event.head_commit.message, 'backend')
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: CD to backend dir
+        run: cd backend
+
+      - name: GCP Authentication
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Configure Docker
+        run: |
+          gcloud auth configure-docker us-central1-docker.pkg.dev
+          
+      - name: Debug Information
+        run: |
+          echo "Artifact Registry Location: ${{ secrets.GCP_BACKEND_AR_LOCATION }}"
+          gcloud auth list
+          docker info
+
+      - name: Build and Push to Artifact Registry
+        run: |
+          cd backend
+          docker build -t ${{ secrets.GCP_BACKEND_AR_LOCATION }} .
+          docker push ${{ secrets.GCP_BACKEND_AR_LOCATION }}
+
+      - name: Deploy to Compute Engine
+        run: |
+          gcloud compute ssh ${{ secrets.GCP_CE_INSTANCE_ID }} --zone us-central1-c --command "sudo docker stop backendnodeapp-container"
+          gcloud compute ssh ${{ secrets.GCP_CE_INSTANCE_ID }} --zone us-central1-c --command "sudo docker rm backendnodeapp-container"
+          gcloud compute ssh ${{ secrets.GCP_CE_INSTANCE_ID }} --zone us-central1-c --command "sudo docker run -d --name backendnodeapp-container -p 80:80 ${{ secrets.GCP_BACKEND_AR_LOCATION }}"
