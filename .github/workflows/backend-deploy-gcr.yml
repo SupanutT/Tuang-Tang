@@ -42,7 +42,12 @@ jobs:
       - name: Build and Push to Artifact Registry
         run: |
           cd backend
-          docker build -t ${{ secrets.GCP_BACKEND_AR_LOCATION }} .
+          docker build -t ${{ secrets.GCP_BACKEND_AR_LOCATION }} \
+            --build-arg DB_URL="${{ secrets.DB_URL }}" \
+            --build-arg CLOUDINARY_CLOUD_NAME="${{ secrets.CLOUDINARY_CLOUD_NAME }}" \
+            --build-arg CLOUDINARY_KEY="${{ secrets.CLOUDINARY_KEY }}" \
+            --build-arg CLOUDINARY_SECRET="${{ secrets.CLOUDINARY_SECRET }}" \
+            .
           docker push ${{ secrets.GCP_BACKEND_AR_LOCATION }}
 
       - name: Deploy to Cloud Run
