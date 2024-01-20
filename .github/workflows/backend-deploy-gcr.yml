@@ -22,9 +22,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: CD to frontend dir
-        run: cd frontend
-
       - name: GCP Authentication
         uses: google-github-actions/setup-gcloud@v0
         with:
@@ -44,7 +41,7 @@ jobs:
 
       - name: Build and Push to Artifact Registry
         run: |
-          cd frontend
+          cd backend
           docker build -t ${{ secrets.GCP_BACKEND_AR_LOCATION }} .
           docker push ${{ secrets.GCP_BACKEND_AR_LOCATION }}
 
