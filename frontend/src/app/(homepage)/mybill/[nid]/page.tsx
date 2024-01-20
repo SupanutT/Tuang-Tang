@@ -5,7 +5,7 @@ export default function MyBillDetailPage( {params}: { params: {nid:string}}){
                 MyBill ID {params.nid}
             </div>
             <div id="container">
-	            <table className="border-collapse w-[800px]">
+	            <table className="border-collapse w-[800px] overflow-hidden shadow-black border-black">
 		            <thead>
 			            <tr>
 				            <th>Column 1</th>
