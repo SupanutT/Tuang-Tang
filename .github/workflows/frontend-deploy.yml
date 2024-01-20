@@ -45,7 +45,11 @@ jobs:
       - name: Build and Push to Artifact Registry
         run: |
           cd frontend
-          docker build -t ${{ secrets.GCP_FRONTEND_AR_LOCATION }} .
+          docker build -t ${{ secrets.GCP_FRONTEND_AR_LOCATION }} \
+            --build-arg NEXTAUTH_URL="${{ secrets.NEXTAUTH_URL }}" \
+            --build-arg NEXTAUTH_SECRET="${{ secrets.NEXTAUTH_SECRET }}" \
+            --build-arg NEXT_PUBLIC_BACKEND_API="${{ secrets.NEXT_PUBLIC_BACKEND_API }}" \
+            .
           docker push ${{ secrets.GCP_FRONTEND_AR_LOCATION }}
 
       - name: Deploy to Cloud Run
