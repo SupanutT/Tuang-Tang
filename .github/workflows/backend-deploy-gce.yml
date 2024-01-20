@@ -52,4 +52,5 @@ jobs:
         run: |
           gcloud compute ssh ${{ secrets.GCP_CE_INSTANCE_ID }} --zone us-central1-c --command "sudo docker stop backendnodeapp-container"
           gcloud compute ssh ${{ secrets.GCP_CE_INSTANCE_ID }} --zone us-central1-c --command "sudo docker rm backendnodeapp-container"
+          gcloud compute ssh ${{ secrets.GCP_CE_INSTANCE_ID }} --zone us-central1-c --command "sudo docker pull ${{ secrets.GCP_BACKEND_AR_LOCATION }}"
           gcloud compute ssh ${{ secrets.GCP_CE_INSTANCE_ID }} --zone us-central1-c --command "sudo docker run -d --name backendnodeapp-container -p 80:80 ${{ secrets.GCP_BACKEND_AR_LOCATION }}"
