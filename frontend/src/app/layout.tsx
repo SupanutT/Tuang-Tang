@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { getServerSession } from 'next-auth';
-import { authOptions } from './api/auth/[...nextauth]/route';
+// import { getServerSession } from 'next-auth';
+// import { authOptions } from './api/auth/[...nextauth]/route';
 import NextAuthProvider from '@/providers/NextAuthProvider';
 
 
@@ -18,15 +18,15 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerSession(authOptions);
+  // const session = await getServerSession(authOptions);
   return (
     <html lang="en">
       <title> Tuang Tang</title>
 
       <body className={inter.className}>
-        <NextAuthProvider session={session}>
+        {/* <NextAuthProvider session={session}> */}
           {children}
-        </NextAuthProvider>
+        {/* </NextAuthProvider> */}
       </body>
     </html>
   );
