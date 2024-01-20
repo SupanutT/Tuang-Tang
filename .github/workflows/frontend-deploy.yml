@@ -38,20 +38,20 @@ jobs:
           
       - name: Debug Information
         run: |
-          echo "Artifact Registry Location: ${{ secrets.GCP_AR_LOCATION }}"
+          echo "Artifact Registry Location: ${{ secrets.GCP_FRONTEND_AR_LOCATION }}"
           gcloud auth list
           docker info
 
       - name: Build and Push to Artifact Registry
         run: |
           cd frontend
-          docker build -t ${{ secrets.GCP_AR_LOCATION }} .
-          docker push ${{ secrets.GCP_AR_LOCATION }}
+          docker build -t ${{ secrets.GCP_FRONTEND_AR_LOCATION }} .
+          docker push ${{ secrets.GCP_FRONTEND_AR_LOCATION }}
 
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy tuang-tang-frontendnextapp-image \
-            --image "${{ secrets.GCP_AR_LOCATION }}" \
+            --image "${{ secrets.GCP_FRONTEND_AR_LOCATION }}" \
             --platform managed \
             --region "${{ env.REGION }}" \
             --allow-unauthenticated 
