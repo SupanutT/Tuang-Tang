@@ -19,6 +19,6 @@ module.exports.createBill = async (req, res, next) => {
         return res.send('Image is NOT uploaded. Please try again!');
     }
     await bill.save();
-    res.send(bill._id);
+    res.json(({ success: true, message: `Data received successfully with bill_id = ${bill._id}` }));
 };
 
