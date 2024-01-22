@@ -8,7 +8,7 @@ export default function MyBill(){
 
     return (
         <main className="mt-[50px]">
-            <BillList who="my"/>
+            <BillList />
             <AddBill />
         </main>
     );
