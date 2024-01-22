@@ -2,6 +2,7 @@ const User = require('../models/user');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const cookie = require('cookie');
 
 module.exports.register = async (req, res) => {
     try {
@@ -18,8 +19,13 @@ module.exports.login = async (req, res) => {
     const user = await User.findOne({ username: req.body.username });
     console.log(req.body.username);
     console.log(user._id.toString());
-    const token = jwt.sign({ id: user._id.toString() }, 'your-secret-key', { expiresIn: '1h', httpOnly: true });
-    res.cookie('token', token, { expiresIn: '3m' });
+    const token = jwt.sign({ id: user._id.toString() }, 'your-secret-key');
+    res.cookie('authToken', token, {
+        httpOnly: true,
+        maxAge: 3600 * 1000, // Expires in 1 hour (in milliseconds)
+        // sameSite: 'strict',
+        // path: '/',
+    });
     res.json({ message: "Logged in successfully!", token });
 };
 
