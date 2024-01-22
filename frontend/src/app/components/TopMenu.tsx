@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import TopMenuItem from './TopMenuItem';
 import Link from 'next/link';
-// import TopMenuSignOut from './TopMenuSignOut';
+import TopMenuSignOut from './TopMenuSignOut';
 
 export default function TopMenu() {
 
@@ -13,7 +13,7 @@ export default function TopMenu() {
             </Link>
             <TopMenuItem title='My Bill' pageRef='mybill'/>
             <TopMenuItem title='Other Bill' pageRef='otherbill'/>
-            {/* <TopMenuSignOut /> */}
+            <TopMenuSignOut />
 
         </div>
     );
