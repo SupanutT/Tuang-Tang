@@ -1,30 +1,23 @@
-export default function TableData( { item }: { item: Record<string,any> } ) {
+import BodyCell from "./BodyCell";
+import BodyCheckBoxCell from "./BodyCheckBoxCell";
+
+export default function TableData( { item, num }: { item: Record<string,any>, num: number } ) {
 
     return (
 		<tr className="flex">
 			{
 				Object.keys(item).map((key) => {
 					switch (key) {
-						case("No"): {
-							return <td key={key} className="py-[15px] w-[50px] pl-[15px] bg-black opacity-50 text-white hover:opacity-30">
-							{`${item[key]}`}
-							</td>
-						}case("Menu"):{
-							return <td key={key} className="py-[15px] w-[200px] pl-[15px] bg-black opacity-50 text-white hover:opacity-30">
-							{`${item[key]}`}
-							</td>
-						}case("Quantity"):{
-							return <td key={key} className="py-[15px] w-[100px] pl-[15px] bg-black opacity-50 text-white hover:opacity-30">
-							{`${item[key]}`}
-							</td>
-						}case("Price"):{
-							return <td key={key} className="py-[15px] w-[100px] pl-[15px] bg-black opacity-50 text-white hover:opacity-30">
-							{`${item[key]}`}
-							</td>
+						case("_id"): {
+							return <BodyCell key={`${key}_${num}`} value={`${num}`} width="50" left={true}/>
+						}case("menu"):{
+							return <BodyCell key={`${key}_${num}`} value={item[key]} width="200" left={true}/>
+						}case("quantity"):{
+							return <BodyCell key={`${key}_${num}`} value={item[key]} width="100" left={false}/>
+						}case("price"):{
+							return <BodyCell key={`${key}_${num}`} value={item[key]} width="100" left={false}/>
 						}default: {
-							return <td key={key} className="py-[15px] w-[100px] pl-[15px] bg-black opacity-50 text-white hover:opacity-30">
-							{`${item[key]}`}
-							</td>
+							return <BodyCheckBoxCell key={`${key}_${num}`} isChecked={item[key]} width="100" id={`${key}_${num}`}/>
 						}
 					}
 				}

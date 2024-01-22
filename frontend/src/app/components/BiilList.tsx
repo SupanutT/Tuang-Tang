@@ -14,25 +14,7 @@ export default async function BillList() {
     const billData: Bill[] = billResponse.bills;
 
     // console.log(billData)
-    /*
 
-    // mockdata
-
-    const mockMyBillData = [
-        { bid: "001", name: "Izakaya" },
-        { bid: "002", name: "Jae Oh", },
-        { bid: "003", name: "Hea Moo",},
-        { bid: "004", name: "Izakaya AV", },
-        { bid: "005", name: "IIzakaya AV2", },
-    ];
-
-    const mockOtherBillData = [
-        { bid: "001", name: "Izakaya" },
-        { bid: "002", name: "Jae Oh", },
-        { bid: "003", name: "Hea Moo",},
-        { bid: "004", name: "Izakaya AV", },
-    ];
-    */
 
 
     // const Data = who=="my" ? mockMyBillData: mockOtherBillData;

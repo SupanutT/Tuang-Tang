@@ -1,47 +1,21 @@
+import HeadCell from "./HeadCell"
 
-interface Bill {
-	[key: string]: any
-}
+export default function TableHead( { dividers }: { dividers: string[] }){
 
-export default function TableHead( { data }: { data: Bill[]}){
+    const headColumn = [ 'No', 'Menu', 'Quantity', 'Price', 'Me', ...dividers ]
 
-    const headColumn = Object.keys(data[0])
-
+    // console.log(headColumn)
     return (
         <tr className="flex">
             {
                 headColumn.map((col)=>{
                     switch(col){
                         case('No'):{
-                            return (
-                                <th key={`${headColumn.indexOf(col)}`}className={`py-[15px] w-[50px] pl-[15px] bg-[#edc077] text-white text-left`}>
-                                    {col}
-                                </th>
-                            );
+                            return <HeadCell key={headColumn.indexOf(col)} value={col} width="50"/>
                         }case('Menu'):{
-                            return (
-                                <th key={`${headColumn.indexOf(col)}`}className={`py-[15px] w-[200px] pl-[15px] bg-[#edc077] text-white text-left`}>
-                                    {col}
-                                </th>
-                            );
-                        }case('Quantity'):{
-                            return (
-                                <th key={`${headColumn.indexOf(col)}`}className={`py-[15px] w-[100px] pl-[15px] bg-[#edc077] text-white text-left`}>
-                                    {col}
-                                </th>
-                            );
-                        }case('Price'):{
-                            return (
-                                <th key={`${headColumn.indexOf(col)}`}className={`py-[15px] w-[100px] pl-[15px] bg-[#edc077] text-white text-left`}>
-                                    {col}
-                                </th>
-                            );
+                            return <HeadCell key={headColumn.indexOf(col)} value={col} width="200"/>
                         }default: {
-                            return (
-                                <th key={`${headColumn.indexOf(col)}`}className={`py-[15px] w-[100px] pl-[15px] bg-[#edc077] text-white text-left`}>
-                                    {col}
-                                </th>
-                            );
+                            return <HeadCell key={headColumn.indexOf(col)} value={col} width="100"/>
                         }
                     }
                 })
