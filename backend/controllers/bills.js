@@ -1,13 +1,27 @@
 const Bill = require('../models/bill');
+const getItemDetail = require('../receipt-ocr/index');
 
 module.exports.showBill = async (req, res, next) => {
     const bill = await Bill.findById(req.params.id);
-    res.send({ bill });
+    const { id, owner, ...data } = bill.toJSON(); // Destructure owner field
+    res.send(data);
 };
 
 module.exports.showAllBill = async (req, res, next) => {
-    const bills = await Bill.find();
-    res.send({ bills });
+    const bills = await Bill.find().populate({
+        path: 'owner',
+        select: 'name'
+    });
+
+    const data = bills.map(bill => {
+        const { id, owner, ...restOfBill } = bill.toJSON(); // Destructure owner field
+        return {
+            ...restOfBill,
+            owner_name: bill.owner_name
+        };
+    });
+    res.send(data);
+    // const itemDetail = await getItemDetail();
 };
 
 module.exports.createBill = async (req, res, next) => {

@@ -5,14 +5,10 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-
-/* api routes */
-const billRoutes = require('./routes/bills');
-
-const app = express();
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'ejs');
-app.use(express.urlencoded({ extended: true }));
+const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const MongoStore = require('connect-mongo');
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/tuang-tang';
 
@@ -23,22 +19,48 @@ db.once('open', () => {
     console.log('Database connected');
 });
 
-app.listen(80, () => console.log('Listening to PORT 80'));
+
+const User = require('./models/user');
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+
+/* api routes */
+const billRoutes = require('./routes/bills');
+const userRoutes = require('./routes/users');
+
+const app = express();
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'ejs');
+app.use(express.urlencoded({ extended: true }));
+
+app.use(express.json());
 app.use(cors());
 
-app.use('/home', (req, res) => {
-    res.send('HI!');
-});
-app.use('/cicd', (req, res) => {
-    res.send('YAY!');
-});
+const jwtOptions = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: 'your-secret-key',
+};
+
+passport.use(new JwtStrategy(jwtOptions, (jwtPayload, done) => {
+    const user = { id: jwtPayload.id };
+    return done(null, user);
+}));
+
+app.use(passport.initialize());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 app.use('/index', (req, res) => {
     res.render('index.html');
 });
 
-app.use('/api/bills/', billRoutes);
+app.use('/', userRoutes);
+app.use('/bills/', billRoutes);
 
-app.use('/', (req, res) => {
+app.use('/testapi', (req, res) => {
     res.send('BACKEND SIDE!');
 });
+
+app.listen(80, () => console.log('Listening to PORT 80'));
