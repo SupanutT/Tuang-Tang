@@ -6,9 +6,9 @@ COPY . .
 
 RUN npm install
 
-ARG DB_URL
+# ARG DB_URL
 
-RUN echo "DB_URL=${DB_URL}" > .env
+# RUN echo "DB_URL=${DB_URL}" > .env
 
 EXPOSE 80
 
