@@ -18,7 +18,7 @@ module.exports.login = async (req, res) => {
     const user = await User.findOne({ username: req.body.username });
     console.log(req.body.username);
     console.log(user._id.toString());
-    const token = jwt.sign({ id: user._id.toString() }, 'your-secret-key', { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id.toString() }, 'your-secret-key', { expiresIn: '1h', httpOnly: true });
     res.cookie('token', token, { expiresIn: '3m' });
     res.json({ message: "Logged in successfully!", token });
 };
