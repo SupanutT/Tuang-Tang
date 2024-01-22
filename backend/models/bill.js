@@ -23,7 +23,7 @@ const billSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    dividers: [String],
+    all_dividers: [String],
     billItems: [billItemSchema]
 }, opts);
 
