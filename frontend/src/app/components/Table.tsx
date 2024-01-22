@@ -42,6 +42,8 @@ export default function Table(){
         }
     }
 
+
+
     return (
         <div className='absolute top-[20%] left-[5%]'>
 	        <table className="shadow-black">

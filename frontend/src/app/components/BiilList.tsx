@@ -1,9 +1,13 @@
 
-import { useReducer } from "react";
 import BillCard from "./BillCard";
 import Link from "next/link";
+import getBills from "@/libs/getBills";
 
-export default function BillList( { who }: { who: string } ) {
+export default async function BillList( { who }: { who: string } ) {
+
+    const billData = await getBills();
+
+    // console.log(billData.bills)
 
     const mockMyBillData = [
         { bid: "001", name: "Izakaya" },
@@ -19,6 +23,7 @@ export default function BillList( { who }: { who: string } ) {
         { bid: "003", name: "Hea Moo",},
         { bid: "004", name: "Izakaya AV", },
     ];
+
 
     const Data = who=="my" ? mockMyBillData: mockOtherBillData;
 
