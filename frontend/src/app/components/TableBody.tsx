@@ -1,5 +1,8 @@
 import TableData from "./TableData";
 
+interface BillItem {
+	[key: string]: any
+}
 
 interface Bill {
     _id: string,
@@ -20,32 +23,14 @@ interface Bill {
     }[]
 }
 
-interface DividerData {
-	_id: string;
-	menu: string;
-	quantity: number;
-	price: number;
-	dividers: string[];
-  }
-
   interface ProcessedBillItem {
-	_id: string;
-	menu: string;
-	quantity: number;
-	price: number;
 	[key: string]: boolean | string | number;
   }
 
-export default function TableBody( { bill }: { bill: Bill }) {
+export default function TableBody( { owner_name, all_billItems, all_dividers }: { owner_name: string, all_billItems: BillItem[], all_dividers: string[] }) {
 
-	const processBillItems = (data: {
-		owner_name: string;
-		all_dividers: string[];
-		billItems: DividerData[];
-	  }): ProcessedBillItem[] => {
-		const { owner_name, all_dividers, billItems } = data;
-
-		return billItems.map(({ dividers, ...rest }) => {
+	const processBillItems = ()=>{
+		return all_billItems.map(({ dividers, ...rest }) => {
 		  const dividersMap: { [key: string]: boolean } = {};
 
 		  all_dividers.forEach((divider) => {
@@ -62,15 +47,9 @@ export default function TableBody( { bill }: { bill: Bill }) {
 		});
 	  };
 
-	  const billItems: ProcessedBillItem[] = processBillItems(bill);
-
-	//   console.log(billItems)
-
-
-    return (
-		billItems.map((item, index)=>{
-			return <TableData key={index+1} item={item} num={index+1}/>
-		})
-	 );
+	  return (
+		  processBillItems().map((item, index)=>{
+			  return <TableData key={index+1} item={item} num={index+1}/>
+		  })
+	   );
 }
-{}
