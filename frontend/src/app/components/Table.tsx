@@ -2,11 +2,12 @@
 	import TableHead from "./TableHead";
 	import TableBody from "./TableBody";
 	import { useReducer, useState } from "react";
+	import { useEffect } from "react";
 
 
 	interface BillItem {
 		[key: string]: any
-	}
+	};
 
 	interface Bill {
 		_id: string,
@@ -25,27 +26,53 @@
 			quantity: number,
 			dividers: string[]
 		}[]
-	}
+	};
+
 	export default function Table(){
 
-		const billItemReducer = ( billItems: BillItem[], action: {type: string, newMenu: {
-			menu:string, quantity: number, price: number
-		}}) => {
+		const billItemReducer = (
+			billItems: BillItem[],
+			action: {
+				type: string,
+				Menu: {
+					menu:string,
+					quantity: number,
+					price: number,
+					position: string,
+					isChecked: boolean
+				}
+			}
+		) => {
 			switch(action.type){
 				case('addMenu'):{
 					return [
 						...billItems,
 						{
-							_id: billItems.length.toString(),
-							menu: action.newMenu.menu,
-							price: action.newMenu.price,
-							quantity: action.newMenu.quantity,
+							_id: (billItems.length + 1).toString(),
+							menu: action.Menu.menu,
+							price: action.Menu.price,
+							quantity: action.Menu.quantity,
 							dividers: []
 						}
-					]
+					];
+				}
+				case('editCheckbox'):{
+					let [column, row]: string[] = action.Menu.position.split("_");
+					const newBillItems = [...billItems];
+					const editBillItem: BillItem =  { ...newBillItems[Number(row)-1] };
+
+					if(action.Menu.isChecked){
+						editBillItem.dividers.push(column);
+					}else{
+						editBillItem.dividers = editBillItem.dividers.filter((item: string) => item != column);
+					}
+					newBillItems[Number(row)-1] = editBillItem;
+					// console.log(newBillItems)
+					return newBillItems;
+
 				}
 				default: {
-					return billItems
+					return billItems;
 				}
 			}
 		}
@@ -53,10 +80,10 @@
 		const dividerReducer = ( all_dividers: string[], action: {type: string, newDivider: string}) =>{
 			switch(action.type){
 				case("addDivider"):{
-					return [...all_dividers, action.newDivider]
+					return [...all_dividers, action.newDivider];
 				}
 				default: {
-					return all_dividers
+					return all_dividers;
 				}
 			}
 		}
@@ -78,13 +105,11 @@
 					{ _id:"sdfsadfds3", menu: 'coke', quantity: 2, price: 80, dividers: ['Jai', 'Pee'] },
 					{ _id:"sdfsadfds4", menu: 'chicken', quantity: 2, price: 250, dividers: ['Pee', 'North'] },
 				]
-			}
+		}
 
 
-		// const [ bill, setBill ] = useState( data );
 		const [ all_dividers, dispatchDivider ] = useReducer( dividerReducer, data.all_dividers )
-		const [ all_billItems, dispatchBillItem ] = useReducer( billItemReducer, data.billItems )
-		const [ owner_name, setOwnerName ] = useState(data.owner_name)
+		const [ billItems, dispatchBillItem ] = useReducer( billItemReducer, data.billItems )
 		const [ newDivider, setNewDivider ] = useState('');
 		const [ newMenu, setNewMenu ] = useState({
 			menu: '',
@@ -101,17 +126,41 @@
 
 		function addNewMenu() {
 			if(newMenu.menu.trim() !== '' && Number(newMenu.quantity) > 0 && Number(newMenu.price) > 0){
-				dispatchBillItem({ type: 'addMenu', newMenu: {
-					menu: newMenu.menu,
-					quantity: Number(newMenu.quantity),
-					price: Number(newMenu.price)
-				}})
+				dispatchBillItem({
+					type: 'addMenu',
+					Menu: {
+						menu: newMenu.menu,
+						quantity: Number(newMenu.quantity),
+						price: Number(newMenu.price),
+						position: '',
+						isChecked: false
+					}
+				})
 				setNewMenu({
 					menu: '',
 					quantity: '',
 					price: ''
 				})
 			}
+		}
+
+		useEffect(() => {
+			console.log('Updated billItems:', billItems);
+		}, [billItems]);
+
+		function handleCheckboxChange(position: string, isChecked: boolean){
+			// console.log(`${position} ${isChecked}`)
+			dispatchBillItem({
+				type: 'editCheckbox',
+				Menu: {
+					menu: '',
+					quantity: 0,
+					price: 0,
+					position: position,
+					isChecked: isChecked
+				}
+			})
+
 		}
 
 		// const [ newMenu, setNewMenu ] = useState({
@@ -127,7 +176,7 @@
 						<TableHead dividers={all_dividers}/>
 					</thead>
 					<tbody>
-						<TableBody owner_name={owner_name} all_dividers={all_dividers} all_billItems={all_billItems}/>
+						<TableBody owner_name={data.owner_name} all_dividers={all_dividers} all_billItems={billItems} onCheckboxChange={handleCheckboxChange}/>
 					</tbody>
 				</table>
 
@@ -152,7 +201,7 @@
 							}))
 						}}/>
 						<button className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-2 px-5 rounded absolute right-3" type="button" onClick={()=>addNewMenu()} >
-							Submit
+							Add Menu
 						</button>
 					</div>
 
@@ -161,7 +210,7 @@
 							setNewDivider(e.target.value)
 						}}/>
 						<button className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-2 px-5 rounded" type="button" onClick={()=>addNewDivider()} >
-							Submit
+							Add Divider
 						</button>
 					</div>
 

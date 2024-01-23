@@ -27,7 +27,17 @@ interface Bill {
 	[key: string]: boolean | string | number;
   }
 
-export default function TableBody( { owner_name, all_billItems, all_dividers }: { owner_name: string, all_billItems: BillItem[], all_dividers: string[] }) {
+export default function TableBody({
+	owner_name,
+	all_billItems,
+	all_dividers,
+	onCheckboxChange,
+}: {
+	owner_name: string,
+	all_billItems: BillItem[],
+	all_dividers: string[],
+	onCheckboxChange: (position: string, isChecked: boolean) => void
+}) {
 
 	const processBillItems = ()=>{
 		return all_billItems.map(({ dividers, ...rest }) => {
@@ -49,7 +59,7 @@ export default function TableBody( { owner_name, all_billItems, all_dividers }: 
 
 	  return (
 		  processBillItems().map((item, index)=>{
-			  return <TableData key={index+1} item={item} num={index+1}/>
+			  return <TableData key={index+1} item={item} num={index+1} onCheckboxChange={onCheckboxChange}/>
 		  })
 	   );
 }

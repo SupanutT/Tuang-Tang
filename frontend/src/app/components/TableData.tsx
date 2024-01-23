@@ -1,8 +1,14 @@
 import BodyCell from "./BodyCell";
 import BodyCheckBoxCell from "./BodyCheckBoxCell";
 
-export default function TableData( { item, num }: { item: Record<string,any>, num: number } ) {
-
+export default function TableData({
+	item,
+	num,
+	onCheckboxChange
+}: {
+	item: Record<string,any>,
+	num: number, onCheckboxChange: (position: string, isChecked: boolean)=>void
+}) {
     return (
 		<tr className="flex">
 			{
@@ -17,7 +23,13 @@ export default function TableData( { item, num }: { item: Record<string,any>, nu
 						}case("price"):{
 							return <BodyCell key={`${key}_${num}`} value={item[key]} width="100px" left={false}/>
 						}default: {
-							return <BodyCheckBoxCell key={`${key}_${num}`} isChecked={item[key]} width="100px" id={`${key}_${num}`}/>
+							return <BodyCheckBoxCell
+										key={`${key}_${num}`}
+										isChecked={item[key]}
+										width="100px"
+										id={`${key}_${num}`}
+										onCheckboxChange={onCheckboxChange}
+									/>
 						}
 					}
 				})
