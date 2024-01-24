@@ -18,7 +18,7 @@ export default function Home() {
     const fetchAccessToken = async () => {
       const access_token = await getToken();
       if (access_token) {
-        router.push('/mybill')
+        router.push('/mybill') 
       }
     };
 
