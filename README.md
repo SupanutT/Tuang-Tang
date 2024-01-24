@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://res.cloudinary.com/dgwfiyuty/image/upload/v1706115558/logo-no-background_cacjrt.png" width="700" >
+  <img src="https://res.cloudinary.com/dgwfiyuty/image/upload/v1706115917/logo-no-background_uir9b8.png" width="700" >
   <h2>Tuang-Tang : Simplifying Bill Splitting with Ease</h2>
   <h3>View Demo : <a href="https://www.tuang-tang.site/">www.tuang-tang.site</a></h3>
   <h4>Still Developing everyday! Please stays tune!</h4>
