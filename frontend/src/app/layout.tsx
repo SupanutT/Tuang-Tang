@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Tuang Tang',
-  description: 'Manage expenses in one app',
+  description: 'Simplifying Bill Splitiing with Ease',
 }
 
 export default async function RootLayout({
