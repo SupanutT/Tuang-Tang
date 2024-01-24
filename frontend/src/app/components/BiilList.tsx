@@ -11,7 +11,8 @@ export default async function BillList() {
 
 
     const billResponse = await getBills();
-    const billData: Bill[] = billResponse.bills;
+    console.log(billResponse)
+    const billData: Bill[] = billResponse;
 
     // console.log(billData)
 
