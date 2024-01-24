@@ -20,11 +20,8 @@ export default function Home() {
         body: JSON.stringify({ username, password }),
       });
       const data = await response.json();
-      // console.log('data', data)
+      
       if (response.ok) {
-        // console.log('Login successful');
-        // console.log(data.accessToken)
-        document.cookie = `accessToken=${data.accessToken}`
         router.push('/mybill')
         
         // Handle successful login, e.g., redirect to another page
