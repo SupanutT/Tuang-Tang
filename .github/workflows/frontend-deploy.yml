@@ -45,6 +45,7 @@ jobs:
       - name: Build and Push to Artifact Registry
         run: |
           cd frontend
+          docker image prune -a
           docker build -t ${{ secrets.GCP_FRONTEND_AR_LOCATION }} \
             --build-arg NEXTAUTH_URL="${{ secrets.NEXTAUTH_URL }}" \
             --build-arg NEXTAUTH_SECRET="${{ secrets.NEXTAUTH_SECRET }}" \
