@@ -9,7 +9,7 @@ module.exports.register = async (req, res) => {
         const { username, email, password, name } = req.body;
         const user = new User({ email, username, name });
         const registeredUser = await User.register(user, password);
-        res.send(registeredUser);
+        res.send({ message: "Registered successfully!" });
     } catch (e) {
         res.send(e);
     }
@@ -26,7 +26,7 @@ module.exports.login = async (req, res) => {
         // sameSite: 'strict',
         // path: '/',
     });
-    res.json({ message: "Logged in successfully!", token });
+    res.json({ message: "Logged in successfully!" });
 };
 
 

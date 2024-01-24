@@ -8,13 +8,19 @@ const upload = multer({ storage });
 
 router
     .route('/')
-    .get(bills.showAllBill);
+    .get(bills.showAllBill)
+    .post(upload.single('image'), bills.createBill);
 // .post(upload.single('image'), bills.createBill);
 // .post()
 
 router
+    .route('/test')
+    .get(bills.testOcr);
+
+router
     .route('/:id')
-    .get(catchAsync(bills.showBill));
+    .get(catchAsync(bills.showBill))
+    .put(catchAsync(bills.updateBill));
 // .post({
 //     url: receiptOcrEndpoint,
 //     formData: {

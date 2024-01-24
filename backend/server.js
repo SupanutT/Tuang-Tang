@@ -36,7 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors({
     credentials: true,
-    origin: ['https://www.tuang-tang.site']
+    origin: ['https://www.tuang-tang.site', 'http://localhost:3000']
 }));
 
 const jwtOptions = {
