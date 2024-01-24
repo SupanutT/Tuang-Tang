@@ -1,12 +1,29 @@
+<<<<<<< HEAD
 'use client'
 import Image from 'next/image';
+||||||| parent of 203beb0 (frontend : fix auth cookie)
+// Login.js
+"use client"
+=======
+'use client';
+import Image from 'next/image';
+>>>>>>> 203beb0 (frontend : fix auth cookie)
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
+<<<<<<< HEAD
 
 export default function Home() {
 
+||||||| parent of 203beb0 (frontend : fix auth cookie)
+const Login = () => {
+=======
+export default function Home() {
+  
+>>>>>>> 203beb0 (frontend : fix auth cookie)
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter();
 
   const handleLogin = async () => {
     try {
@@ -19,9 +36,28 @@ export default function Home() {
         body: JSON.stringify({ username, password }),
       });
       const data = await response.json();
-      console.log('data', data)
+      // console.log('data', data)
       if (response.ok) {
+<<<<<<< HEAD
         console.log('Login successful');
+||||||| parent of 203beb0 (frontend : fix auth cookie)
+        console.log('Login successful');
+        const setCookieHeader = response.headers.get('Set-Cookie');
+        console.log(setCookieHeader)
+        if (setCookieHeader) {
+          // Parse the cookie header to get the cookie value
+          const authToken = setCookieHeader.split(';')[0].split('=')[1];
+          console.log('Auth Token:', authToken);
+        } else {
+          console.log('no setCookieHeader')
+        }
+=======
+        // console.log('Login successful');
+        // console.log(data.accessToken)
+        document.cookie = `accessToken=${data.accessToken}`
+        router.push('/mybill')
+        
+>>>>>>> 203beb0 (frontend : fix auth cookie)
         // Handle successful login, e.g., redirect to another page
       } else {
         console.error('Login failed');
