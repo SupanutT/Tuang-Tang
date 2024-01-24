@@ -165,15 +165,8 @@
 					isChecked: isChecked
 				}
 			})
-			// console.log(billItems)
 
 		}
-
-		// const [ newMenu, setNewMenu ] = useState({
-		// 	Menu: '',
-		// 	Quantity: 0,
-		// 	Price: 0
-		// })
 
 		return (
 			<div className='absolute top-[20%] left-[5%]'>
