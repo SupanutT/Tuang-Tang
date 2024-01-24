@@ -1,9 +1,11 @@
 'use client';
-import Image from 'next/image';
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
+
 import SavingsIcon from '@mui/icons-material/Savings';
 import Link from 'next/link';
-import TopMenuItem from './components/TopMenuItem';
+
+
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
@@ -11,6 +13,17 @@ export default function Home() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchAccessToken = async () => {
+      const access_token = await getToken();
+      if (access_token) {
+        router.push('/mybill')
+      }
+    };
+
+    fetchAccessToken();
+  }, []);
 
   const handleLogin = async () => {
     try {
