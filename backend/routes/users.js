@@ -6,6 +6,8 @@ const User = require('../models/user');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
+
+
 router.post('/register', catchAsync(users.register));
 
 router.post('/login', passport.authenticate('local', { session: false }), users.login);
