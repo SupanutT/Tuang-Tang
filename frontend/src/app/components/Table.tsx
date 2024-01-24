@@ -62,12 +62,17 @@
 					const editBillItem: BillItem =  { ...newBillItems[Number(row)-1] };
 
 					if(action.Menu.isChecked){
-						editBillItem.dividers.push(column);
+						if(!editBillItem.dividers.includes(column)){
+							editBillItem.dividers.push(column);
+						}else{
+							return newBillItems;
+						}
 					}else{
 						editBillItem.dividers = editBillItem.dividers.filter((item: string) => item != column);
 					}
 					newBillItems[Number(row)-1] = editBillItem;
 					// console.log(newBillItems)
+					console.log(`[${Date.now()}] Updated billItems:`, newBillItems);
 					return newBillItems;
 
 				}
@@ -144,9 +149,9 @@
 			}
 		}
 
-		useEffect(() => {
-			console.log('Updated billItems:', billItems);
-		}, [billItems]);
+		// useEffect(() => {
+		// 	console.log('Updated billItems:', billItems);
+		// }, [billItems]);
 
 		function handleCheckboxChange(position: string, isChecked: boolean){
 			// console.log(`${position} ${isChecked}`)
@@ -160,6 +165,7 @@
 					isChecked: isChecked
 				}
 			})
+			// console.log(billItems)
 
 		}
 
