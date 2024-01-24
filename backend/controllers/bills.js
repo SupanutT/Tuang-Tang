@@ -16,8 +16,6 @@ module.exports.showAllBill = async (req, res, next) => {
 
 
 
-
-    // POPULATED
     const bills = await Bill.find().populate({
         path: 'owner',
         select: 'name'
