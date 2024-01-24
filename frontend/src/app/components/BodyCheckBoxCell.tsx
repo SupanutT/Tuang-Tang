@@ -11,7 +11,7 @@ export default function BodyCheckBoxCell( {
 }) {
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log('Checkbox Clicked in BodyCheckBoxCell');
+        // console.log('Checkbox Clicked in BodyCheckBoxCell');
         onCheckboxChange(id, event.target.checked);
     }
 
