@@ -1,13 +1,17 @@
 import BodyCell from "./BodyCell";
 import BodyCheckBoxCell from "./BodyCheckBoxCell";
+import BodyNumberCell from "./BodyNumberCell";
 
 export default function TableData({
 	item,
 	num,
-	onCheckboxChange
+	onCheckboxChange,
+	onDeleteMenuClicked
 }: {
 	item: Record<string,any>,
-	num: number, onCheckboxChange: (position: string, isChecked: boolean)=>void
+	num: number,
+	onCheckboxChange: (position: string, isChecked: boolean)=>void,
+	onDeleteMenuClicked: (position: string) => void
 }) {
     return (
 		<tr className="flex">
@@ -15,7 +19,7 @@ export default function TableData({
 				Object.keys(item).map((key) => {
 					switch (key) {
 						case("_id"): {
-							return <BodyCell key={`${key}_${num}`} value={`${num}`} width="50px" left={true}/>
+							return <BodyNumberCell key={`${key}_${num}`} value={`${num}`} width="50px" onDeleteMenuClicked={onDeleteMenuClicked} id={`${key}_${num}`}/>
 						}case("menu"):{
 							return <BodyCell key={`${key}_${num}`} value={item[key]} width="200px" left={true}/>
 						}case("quantity"):{

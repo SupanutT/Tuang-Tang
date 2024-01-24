@@ -99,6 +99,9 @@ export default function Table(){
 				console.log(newBillItems)
 				return newBillItems
 			}
+			case('deleteMenu'):{
+				return [...billItems].filter((billItem, index) => index != Number(action.Menu.position.split("_")[2]) - 1);
+			}
 			default: {
 				return billItems;
 			}
@@ -169,7 +172,7 @@ export default function Table(){
 		})
 	}
 
-	function handleDeleteHead(position: string){
+	function handleDeleteDivider(position: string){
 		dispatchDivider({
 			type: 'deleteDivider',
 			divider: position.split("_")[0]
@@ -187,14 +190,27 @@ export default function Table(){
 		});
 	}
 
+	function handleDeleteMenu(position: string){
+		dispatchBillItem({
+			type: 'deleteMenu',
+			Menu: {
+				menu: '',
+				quantity: 0,
+				price: 0,
+				position: position,
+				isChecked: false
+			}
+		})
+	}
+
 	return (
 		<div className='absolute top-[20%] left-[5%]'>
 			<table className="shadow-black">
 				<thead>
-					<TableHead dividers={all_dividers} onDeleteHeadClicked={handleDeleteHead}/>
+					<TableHead dividers={all_dividers} onDeleteHeadClicked={handleDeleteDivider}/>
 				</thead>
 				<tbody>
-					<TableBody owner_name={data.owner_name} all_dividers={all_dividers} all_billItems={billItems} onCheckboxChange={handleCheckboxChange}/>
+					<TableBody owner_name={data.owner_name} all_dividers={all_dividers} all_billItems={billItems} onCheckboxChange={handleCheckboxChange} onDeleteMenuClicked={handleDeleteMenu}/>
 				</tbody>
 			</table>
 
@@ -227,7 +243,7 @@ export default function Table(){
 					<input className="appearance-none bg-transparent border-none w-full text-gray-800 mr-10% py-2 px-2 leading-tight focus:outline-none " type="text" placeholder="New Divider" value={newDivider} onChange={(e)=>{
 						setNewDivider(e.target.value)
 					}}/>
-					<button className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-2 px-5 rounded" type="button" onClick={()=>addNewDivider()} >
+					<button className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-2 px-3 rounded" type="button" onClick={()=>addNewDivider()} >
 						Add Divider
 					</button>
 				</div>

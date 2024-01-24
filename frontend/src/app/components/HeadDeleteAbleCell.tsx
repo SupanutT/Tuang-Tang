@@ -1,4 +1,4 @@
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 export default function HeadDeleteAbleCell({
     value,
@@ -19,7 +19,7 @@ export default function HeadDeleteAbleCell({
     return (
         <th style={{ width }} className='flex flex-row-reverse py-[15px] bg-[#edc077] text-white text-center' id={id}>
             <div className='absolute top-0 translate-x-1/2 -translate-y-1/2 cursor-pointer' onClick={handleClick}>
-                <RemoveCircleIcon sx={{ fontSize: 20 }}/>
+                <CancelIcon sx={{ fontSize: 20 }}/>
             </div>
             <div className='w-full'>
                 {value}
