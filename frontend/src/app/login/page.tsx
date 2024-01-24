@@ -1,10 +1,7 @@
 'use client';
-
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-
-import SavingsIcon from '@mui/icons-material/Savings';
-import Link from 'next/link';
 import getToken from '../../libs/getToken';
 
 export default function Home() {
@@ -17,7 +14,7 @@ export default function Home() {
     const fetchAccessToken = async () => {
       const access_token = await getToken();
       if (access_token) {
-        router.push('/mybill') 
+        router.push('/mybill')
       }
     };
 
@@ -35,10 +32,10 @@ export default function Home() {
         body: JSON.stringify({ username, password }),
       });
       const data = await response.json();
-
+      console.log(data)
+      
       if (response.ok) {
         router.push('/mybill')
-
         // Handle successful login, e.g., redirect to another page
       } else {
         console.error('Login failed');
