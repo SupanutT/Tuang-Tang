@@ -14,8 +14,8 @@ RUN echo "NEXTAUTH_URL=${NEXTAUTH_URL}" > .env \
     && echo "NEXTAUTH_SECRET=${NEXTAUTH_SECRET}" >> .env \
     && echo "NEXT_PUBLIC_BACKEND_API=${NEXT_PUBLIC_BACKEND_API}" >> .env
 
-# RUN npm run build
+RUN npm run build
 
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "start"]

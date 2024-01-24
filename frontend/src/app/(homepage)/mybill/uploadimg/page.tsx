@@ -23,7 +23,7 @@ export default function UploadImg(){
                 formData.append('image', selectedFile);
 
                 try {
-                    const response = await fetch( `${process.env.NEXT_PUBLIC_BACKEND_API}/bills`, {
+                    const response = await fetch( `${process.env.NEXT_PUBLIC_BACKEND_API}/api/bills`, {
                         method: 'POST',
                         body: formData,
                     });

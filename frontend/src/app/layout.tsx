@@ -18,7 +18,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <title> Tuang Tang</title>
+      <title>Tuang Tang</title>
 
       <body className={inter.className}>
 
