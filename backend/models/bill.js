@@ -28,7 +28,7 @@ const billSchema = new Schema({
 }, opts);
 
 billSchema.virtual('owner_name', {
-    ref: 'User',  // Reference to the 'User' model
+    ref: 'User',
     localField: 'owner',
     foreignField: '_id',
     justOne: true,
