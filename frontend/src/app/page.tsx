@@ -1,12 +1,55 @@
-'use client'
-import Image from 'next/image';
-import { useState } from 'react';
+'use client';
+
+import { useState, useEffect } from 'react';
+
 import SavingsIcon from '@mui/icons-material/Savings';
 import Link from 'next/link';
-import TopMenuItem from './components/TopMenuItem';
 
+
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchAccessToken = async () => {
+      const access_token = await getToken();
+      if (access_token) {
+        router.push('/mybill')
+      }
+    };
+
+    fetchAccessToken();
+  }, []);
+
+  const handleLogin = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/login`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        router.push('/mybill')
+
+        // Handle successful login, e.g., redirect to another page
+      } else {
+        console.error('Login failed');
+        // Handle failed login, e.g., show an error message
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      // Handle network errors or other issues
+    }
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
