@@ -3,6 +3,7 @@
   <h2>Tuang-Tang : Simplifying Bill Splitting with Ease</h2>
   <h3>View Demo : <a href="https://www.tuang-tang.site/">www.tuang-tang.site</a></h3>
   <h4>Still Developing everyday! Please stays tune!</h4>
+  <h5>⚠Caution! Please be advised that you may encounter some unexpected behavior while we're in the process of enhancing the website.</h5>
 </div>
 
 <details>
@@ -22,6 +23,7 @@
     </li>
     <li><a href="#road-map-checklist">Road Map Checklist</a></li>
     <li><a href="#lessons-learned">Lessons Learned</a></li>
+    <li><a href="#updates">Updates</a></li>
   </ol>
 </details>
 
@@ -120,5 +122,13 @@ This collaborative approach fostered an environment of continuous learning and i
 - **Next.js is a Game Changer**
 
   Trying out Next.js for the first time was like entering a new universe in web development. It made us rethink how we build websites, but in a good way.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Updates
+
+As we kick off our project, we want to quickly recap what we've done each day. This helps us learn and adjust our strategies for the next project. These summaries are like our project diaries, helping us see what's working, tackle challenges, and figure out what we'd do differently next time. It's all about improving as we go along!
+
+- 25 Jan : Investigate and study how to implement the Next Auth for replacing the plain JWT Authorization for better integration and security.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
