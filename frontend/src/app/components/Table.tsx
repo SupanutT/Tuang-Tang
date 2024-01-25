@@ -2,6 +2,7 @@
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
 import { useReducer, useState } from "react";
+import Link from "next/link";
 import { useEffect } from "react";
 
 
@@ -32,7 +33,7 @@ export default function Table(){
 	console.log('Table component rendered');
 
 	const data = {
-			id: "sadkfhalkjdahasdfasdfasdf",
+			_id: "sadkfhalkjdahasdfasdfasdf",
 			name: "here moo",
 			date: "21/10/2545",
 			image: {
@@ -69,8 +70,8 @@ export default function Table(){
 					{
 						_id: (billItems.length + 1).toString(),
 						menu: action.Menu.menu,
-						price: action.Menu.price,
 						quantity: action.Menu.quantity,
+						price: action.Menu.price,
 						dividers: []
 					}
 				];
@@ -87,7 +88,7 @@ export default function Table(){
 				}
 				newBillItems[Number(row)-1] = editBillItem;
 				// console.log(newBillItems)
-				console.log(`[${Date.now()}] Updated billItems:`, newBillItems);
+				// console.log(`[${Date.now()}] Updated billItems:`, newBillItems);
 				return newBillItems;
 			}
 			case('deleteDivider'):{
@@ -135,7 +136,7 @@ export default function Table(){
 		if (newDivider.trim() !== '') {
 			dispatchDivider({ type: 'addDivider', divider: newDivider });
 			setNewDivider('');
-			}
+		}
 	}
 
 	function addNewMenu() {
@@ -207,47 +208,51 @@ export default function Table(){
 		<div className='absolute top-[20%] left-[5%]'>
 			<table className="shadow-black">
 				<thead>
-					<TableHead dividers={all_dividers} onDeleteHeadClicked={handleDeleteDivider}/>
+					<TableHead owner_name={data.owner_name} dividers={all_dividers} onDeleteHeadClicked={handleDeleteDivider}/>
 				</thead>
 				<tbody>
 					<TableBody owner_name={data.owner_name} all_dividers={all_dividers} all_billItems={billItems} onCheckboxChange={handleCheckboxChange} onDeleteMenuClicked={handleDeleteMenu}/>
 				</tbody>
 			</table>
 
+			<div className="flex items-center border-b border-teal-500 py-3 bg-black">
+				<input className="appearance-none bg-transparent border-none w-[200px] text-white ml-[50px] py-2 px-2 leading-tight focus:outline-none " type="text" placeholder="New Menu" value={newMenu.menu} onChange={(e)=>{
+					setNewMenu((prev)=>({
+						...prev,
+						menu: e.target.value
+					}))
+				}}/>
+				<input className="appearance-none bg-transparent border-none w-[100px] text-white py-2 px-2 leading-tight text-center focus:outline-none " type="text" placeholder="Quantity" value={newMenu.quantity} onChange={(e)=>{
+					setNewMenu((prev)=>({
+						...prev,
+						quantity: e.target.value
+					}))
+				}}/>
+				<input className="appearance-none bg-transparent border-none w-[100px] text-white py-2 px-2 leading-tight text-center focus:outline-none " type="text" placeholder="Price" value={newMenu.price} onChange={(e)=>{
+					setNewMenu((prev)=>({
+						...prev,
+						price: e.target.value
+					}))
+				}}/>
+				<button className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-2 px-5 rounded absolute right-3" type="button" onClick={()=>addNewMenu()} >
+					Add Menu
+				</button>
+			</div>
 
-				<div className="flex items-center border-b border-teal-500 py-3 bg-black">
-					<input className="appearance-none bg-transparent border-none w-[200px] text-white ml-[50px] py-2 px-2 leading-tight focus:outline-none " type="text" placeholder="New Menu" value={newMenu.menu} onChange={(e)=>{
-						setNewMenu((prev)=>({
-							...prev,
-							menu: e.target.value
-						}))
-					}}/>
-					<input className="appearance-none bg-transparent border-none w-[100px] text-white py-2 px-2 leading-tight text-center focus:outline-none " type="text" placeholder="Quantity" value={newMenu.quantity} onChange={(e)=>{
-						setNewMenu((prev)=>({
-							...prev,
-							quantity: e.target.value
-						}))
-					}}/>
-					<input className="appearance-none bg-transparent border-none w-[100px] text-white py-2 px-2 leading-tight text-center focus:outline-none " type="text" placeholder="Price" value={newMenu.price} onChange={(e)=>{
-						setNewMenu((prev)=>({
-							...prev,
-							price: e.target.value
-						}))
-					}}/>
-					<button className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-2 px-5 rounded absolute right-3" type="button" onClick={()=>addNewMenu()} >
-						Add Menu
-					</button>
-				</div>
+			<div className="flex items-center border-b border-teal-500 py-2 px-3 bg-white opacity-50">
+				<input className="appearance-none bg-transparent border-none w-full text-gray-800 mr-10% py-2 px-2 leading-tight focus:outline-none " type="text" placeholder="New Divider" value={newDivider} onChange={(e)=>{
+					setNewDivider(e.target.value)
+				}}/>
+				<button className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-2 px-3 rounded" type="button" onClick={()=>addNewDivider()} >
+					Add Divider
+				</button>
+			</div>
 
-				<div className="flex items-center border-b border-teal-500 py-2 px-3 bg-white opacity-50">
-					<input className="appearance-none bg-transparent border-none w-full text-gray-800 mr-10% py-2 px-2 leading-tight focus:outline-none " type="text" placeholder="New Divider" value={newDivider} onChange={(e)=>{
-						setNewDivider(e.target.value)
-					}}/>
-					<button className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-2 px-3 rounded" type="button" onClick={()=>addNewDivider()} >
-						Add Divider
-					</button>
-				</div>
-
+			<Link href={{ pathname: `/mybill/${data._id}/summary`, query: { data: JSON.stringify(data) } }} className="fixed bottom-8 right-8">
+                <button className="h-[50px] bg-zinc-800 px-[20px] text-white rounded-lg">
+                    Submit
+                </button>
+            </Link>
 
 		</div>
 	);

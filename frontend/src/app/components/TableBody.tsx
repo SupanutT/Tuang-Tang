@@ -53,7 +53,7 @@ export default function TableBody({
 
 		return {
 			...rest,
-			me: owner,
+			[owner_name]: owner,
 			...dividersMap,
 		};
 		});
