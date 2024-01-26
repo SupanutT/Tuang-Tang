@@ -1,31 +1,5 @@
 import TableData from "./TableData";
-
-interface BillItem {
-	[key: string]: any
-}
-
-interface Bill {
-	_id: string,
-	name: string,
-	date: string,
-	image: {
-		filename: string,
-		url: string
-	},
-	owner_name: string,
-	all_dividers: string[]
-	billItems: {
-		_id: string
-		menu: string,
-		price: number
-		quantity: number,
-		dividers: string[]
-	}[]
-}
-
-interface ProcessedBillItem {
-	[key: string]: boolean | string | number;
-}
+import { BillItem } from "../../../interfaces";
 
 export default function TableBody({
 	owner_name,

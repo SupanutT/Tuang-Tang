@@ -4,30 +4,9 @@ import TableBody from "./TableBody";
 import { useReducer, useState } from "react";
 import Link from "next/link";
 import { useEffect } from "react";
+import { Bill } from "../../../interfaces";
+import { BillItem } from "../../../interfaces";
 
-
-interface BillItem {
-	[key: string]: any
-};
-
-interface Bill {
-	_id: string,
-	name: string,
-	date: string,
-	image: {
-		filename: string,
-		url: string
-	},
-	owner_name: string,
-	all_dividers: string[]
-	billItems: {
-		_id: string
-		menu: string,
-		price: number
-		quantity: number,
-		dividers: string[]
-	}[]
-};
 
 export default function Table(){
 	console.log('Table component rendered');
