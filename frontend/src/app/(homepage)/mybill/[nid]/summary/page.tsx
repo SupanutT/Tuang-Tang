@@ -1,13 +1,10 @@
 'use client'
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-
+import BillSumary from "@/app/components/BillSumary";
 export default function SumaryPage(){
-    const router = useRouter();
-    console.log(router);
+
     return (
         <div>
-            hello
+            <BillSumary />
         </div>
     );
 

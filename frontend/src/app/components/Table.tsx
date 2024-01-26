@@ -6,6 +6,9 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { Bill } from "../../../interfaces";
 import { BillItem } from "../../../interfaces";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { setBill } from "@/redux/features/billSlice";
 
 
 export default function Table(){
@@ -183,6 +186,20 @@ export default function Table(){
 		})
 	}
 
+	const dispatch = useDispatch<AppDispatch>();
+	const handleSubmit = () => {
+		const updatedBill: Bill = {
+			_id: data._id,
+			name: data.name,
+			date: data.date,
+			image: data.image,
+			owner_name: data.owner_name,
+			all_dividers: all_dividers,
+			billItems: billItems
+		}
+		dispatch(setBill(updatedBill));
+	}
+
 	return (
 		<div className='absolute top-[20%] left-[5%]'>
 			<table className="shadow-black">
@@ -227,8 +244,8 @@ export default function Table(){
 				</button>
 			</div>
 
-			<Link href={{ pathname: `/mybill/${data._id}/summary`, query: { data: JSON.stringify(data) } }} className="fixed bottom-8 right-8">
-                <button className="h-[50px] bg-zinc-800 px-[20px] text-white rounded-lg">
+			<Link href={`/mybill/${data._id}/summary`} className="fixed bottom-8 right-8">
+                <button type="button" className="h-[50px] bg-zinc-800 px-[20px] text-white rounded-lg" onClick={() => handleSubmit()}>
                     Submit
                 </button>
             </Link>
