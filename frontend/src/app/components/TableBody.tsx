@@ -5,14 +5,10 @@ export default function TableBody({
 	owner_name,
 	all_billItems,
 	all_dividers,
-	onCheckboxChange,
-	onDeleteMenuClicked,
 }: {
 	owner_name: string,
 	all_billItems: BillItem[],
 	all_dividers: string[],
-	onCheckboxChange: (position: string, isChecked: boolean) => void
-	onDeleteMenuClicked: (postion: string) => void
 }) {
 
 	const processBillItems = ()=>{
@@ -35,7 +31,7 @@ export default function TableBody({
 
 	return (
 		processBillItems().map((item, index)=>{
-			return <TableData key={index+1} item={item} num={index+1} onCheckboxChange={onCheckboxChange} onDeleteMenuClicked={onDeleteMenuClicked}/>
+			return <TableData key={index+1} item={item} num={index+1} />
 		})
 	);
 }

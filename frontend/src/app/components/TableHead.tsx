@@ -1,7 +1,7 @@
 import HeadCell from "./HeadCell";
 import HeadDeleteAbleCell from "./HeadDeleteAbleCell";
 
-export default function TableHead( { owner_name, dividers, onDeleteHeadClicked }: { owner_name: string, dividers: string[], onDeleteHeadClicked: (position: string) => void }){
+export default function TableHead( { owner_name, dividers }: { owner_name: string, dividers: string[] }){
 
     const headColumn = [ 'No', 'Menu', 'Quantity', 'Price', owner_name, ...dividers ]
     return (
@@ -25,7 +25,7 @@ export default function TableHead( { owner_name, dividers, onDeleteHeadClicked }
                             return <HeadCell key={index} value={col} id={`${col}_${index}`} width='100px'/>
                         }
                         default:{
-                            return <HeadDeleteAbleCell key={index} value={col} id={`${col}_${index}`} width='100px' onDeleteHeadClicked={onDeleteHeadClicked}/>
+                            return <HeadDeleteAbleCell key={index} value={col} id={`${col}_${index}`} width='100px'/>
                         }
                     }
                 })
