@@ -4,7 +4,8 @@ import TopMenuItem from './TopMenuItem';
 import Link from 'next/link';
 import TopMenuSignOut from './TopMenuSignOut';
 
-export default function TopMenu() {
+export default async function TopMenu() {
+
 
     return (
         <div className='h-[50px] bg-orange-200 fixed top-0 right-0 left-0 z-30 border-y-2 border-black w-[100%] flex items-center'>

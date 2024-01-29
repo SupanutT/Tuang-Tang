@@ -1,7 +1,7 @@
 'use client'
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
-import { useReducer, useState, useContext, createContext, useCallback } from "react";
+import { useReducer, useState, useContext, createContext } from "react";
 import Link from "next/link";
 import { useEffect } from "react";
 import { Bill } from "../../../interfaces";
@@ -262,11 +262,6 @@ export default function Table(){
 		handleEditCell: handleEditCell
 	}
 
-	  // useCallback for setNewDivider function
-	  const memoizedSetNewDivider = useCallback((value: string) => {
-		setNewDivider(value);
-	  }, [setNewDivider]);
-
 	return (
 		<BillContext.Provider value={allFunctions}>
 			<div className='absolute top-[20%] left-[5%]'>
@@ -305,7 +300,7 @@ export default function Table(){
 
 				<div className="flex items-center border-b border-teal-500 py-2 px-3 bg-white opacity-50">
 					<input className="appearance-none bg-transparent border-none w-full text-gray-800 mr-10% py-2 px-2 leading-tight focus:outline-none " type="text" placeholder="New Divider" value={newDivider} onChange={(e)=>{
-						memoizedSetNewDivider(e.target.value);
+						setNewDivider(e.target.value);
 					}}/>
 					<button className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-2 px-3 rounded" type="button" onClick={()=>addNewDivider()} >
 						Add Divider
