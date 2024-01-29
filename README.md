@@ -131,4 +131,6 @@ As we kick off our project, we want to quickly recap what we've done each day. T
 
 - 25 Jan : Investigate and study how to implement the Next Auth for replacing the plain JWT Authorization for better integration and security.
 
+- 29 Jan : Integrating the authentication system with Next Auth
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
