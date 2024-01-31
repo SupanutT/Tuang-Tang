@@ -37,19 +37,15 @@ export const authOptions: AuthOptions = {
       }
     })
   ],
-  // session: { strategy: "jwt"},
+  session: { strategy: "jwt" },
   callbacks: {
     async jwt({ token, user }) {
-      console.log("token:", token)
-      user = {
-        expiredIn: token.expiredIn
-      }
+      // console.log("token:", token)
+
       return { ...token, ...user };
     },
     async session({ session, token, user }) {
-      // console.log("-d-", token.expiredIn)
       session.user = token as any;
-      // session.expires = token.;
       return session;
     },
     async redirect({ url, baseUrl }) {

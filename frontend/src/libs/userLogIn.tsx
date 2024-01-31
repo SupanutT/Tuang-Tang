@@ -12,11 +12,6 @@ export default async function userLogIn(userName: string, userPassword: string) 
             }),
         })
         const user = await response.json();
-        const editedToken = {
-            accessToken: user.accessToken,
-            refreshToken: user.refreshToken,
-            expiredDate: (user.expriedIn * 1000 + Date.now())
-        }
 
         return user
 

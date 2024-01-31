@@ -9,7 +9,7 @@ export default function TopMenuSignOut() {
 
     const router = useRouter();
 
-    console.log(session);
+    // console.log(session);
 
     const handleSignOut = () => {
         signOut({
