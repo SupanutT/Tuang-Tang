@@ -14,7 +14,7 @@ const refreshTokenSchema = new Schema({
         required: true
     },
     status: {
-        type: string,
+        type: String,
         enum: ['issued', 'claimed', 'terminated'],
         required: true
     }
