@@ -1,10 +1,9 @@
-'use client'
-import BillSumary from "@/app/components/BillSummary";
-export default function SumaryPage() {
+import BillSummary from "@/app/components/BillSummary";
+export default function SummaryPage() {
 
     return (
-        <div>
-            <BillSumary />
+        <div className="mt-[50px] w-[100%] flex justify-center flex-column text-center">
+            <BillSummary />
         </div>
     );
 

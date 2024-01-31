@@ -35,8 +35,8 @@ export default function BillSummary() {
     }
 
     return (
-        <div>
-            hello summary
+        <div className="w-[80%] bg-gray-200 mt-[10px] h-[50px] flex flex-column items-center justify-center">
+            hello
         </div>
     );
 
