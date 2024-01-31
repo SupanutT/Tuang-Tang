@@ -9,14 +9,25 @@ export default function TopMenuSignOut() {
 
     const router = useRouter();
 
-    // console.log(session);
+    console.log(session);
 
     const handleSignOut = () => {
-       signOut({
-        callbackUrl: '/',
-      });
-      router.push('/'); // Redirect after sign out
+        signOut({
+            callbackUrl: '/',
+        });
+        router.push('/'); // Redirect after sign out
     };
+
+    const getSecret = async () => {
+        if (session) {
+            const res = await fetch("https://api.tuang-tang.site/secret", {
+                method: "Get",
+                headers: {
+                    authorization: `bearer ${session?.user?.accessToken}`,
+                },
+            });
+        }
+    }
 
     return (
         session ?
