@@ -12,10 +12,12 @@ router.post('/register', catchAsync(users.register));
 
 router.post('/login', passport.authenticate('local', { session: false }), users.login);
 
+router.post('/refreshToken', users.refreshToken);
+
 router.get('/secret', passport.authenticate('jwt', { session: false }), (req, res) => {
     const userId = req.user.id;
     console.log('User ID:', userId);
-    res.send(`User ID: ${userId}, SECRET!`);
+    res.send({ data: `User ID: ${userId}, SECRET!` });
 
 });
 

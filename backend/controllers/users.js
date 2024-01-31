@@ -22,7 +22,7 @@ module.exports.login = async (req, res) => {
     const accessToken = jwt.sign({ id: user._id.toString() }, 'your-secret-key', { expiresIn: '1m' });
     const refreshToken = jwt.sign({ id: user._id.toString() }, 'refresh-secret', { expiresIn: '7d' });
     const hashedRefreshToken = crypto.createHash('sha256').update(refreshToken).digest('hex');
-    await RefreshToken.create({ userId: user._id, refreshToken: hashedRefreshToken });
+    await RefreshToken.create({ userId: user._id, refreshToken: hashedRefreshToken, status: 'issued' });
     // res.cookie('access_token', token, {
     //     httpOnly: true,
     //     maxAge: 60 * 1000, // Expires in 1 hour (in milliseconds)
@@ -32,6 +32,20 @@ module.exports.login = async (req, res) => {
     res.json({ message: "Logged in successfully!", accessToken: accessToken, refreshToken: refreshToken, expiredIn: 60 });
 };
 
+module.exports.refreshToken = async (req, res) => {
+    const hashedRefreshToken = crypto.createHash('sha256').update(req.body.refreshToken).digest('hex');
+    const refreshToken = await RefreshToken.findOne({ refreshToken: hashedRefreshToken });
+    const userId = refreshToken.userId;
+    if (refreshToken && refreshToken.status === 'issued') {
+        refreshToken.status = 'claimed';
+        await refreshToken.save();
+        const newAccessToken = jwt.sign({ id: userId }, 'your-secret-key', { expiresIn: '1m' });
+        const newRefreshToken = jwt.sign({ id: userId }, 'refresh-secret', { expiresIn: '7d' });
+        const newHashedRefreshToken = crypto.createHash('sha256').update(refreshToken).digest('hex');
+        await RefreshToken.create({ userId: userId, refreshToken: newHashedRefreshToken, status: 'issued' });
+        res.json({ accessToken: newAccessToken, refreshToken: newRefreshToken, expiredIn: 60 });
+    }
+};
 
 module.exports.logout = async (req, res) => {
     res.cookie('token', '', { expires: new Date(0) });
