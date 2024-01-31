@@ -1,6 +1,6 @@
-export default async function userLogIn(userName: string, userPassword: string){
+export default async function userLogIn(userName: string, userPassword: string) {
 
-    try{
+    try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/login`, {
             method: "POST",
             headers: {
@@ -11,8 +11,14 @@ export default async function userLogIn(userName: string, userPassword: string){
                 password: userPassword
             }),
         })
+        const user = await response.json();
+        const editedToken = {
+            accessToken: user.accessToken,
+            refreshToken: user.refreshToken,
+            expiredDate: (user.expriedIn * 1000 + Date.now())
+        }
 
-        return await response.json()
+        return user
 
     } catch (error) {
         throw new Error("Failed to log in");
