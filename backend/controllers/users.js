@@ -33,15 +33,17 @@ module.exports.login = async (req, res) => {
 };
 
 module.exports.refreshToken = async (req, res) => {
+    console.log(req.body.refreshToken);
     const hashedRefreshToken = crypto.createHash('sha256').update(req.body.refreshToken).digest('hex');
     const refreshToken = await RefreshToken.findOne({ refreshToken: hashedRefreshToken });
+    console.log(refreshToken);
     const userId = refreshToken.userId;
     if (refreshToken && refreshToken.status === 'issued') {
         refreshToken.status = 'claimed';
         await refreshToken.save();
         const newAccessToken = jwt.sign({ id: userId }, 'your-secret-key', { expiresIn: '1m' });
         const newRefreshToken = jwt.sign({ id: userId }, 'refresh-secret', { expiresIn: '7d' });
-        const newHashedRefreshToken = crypto.createHash('sha256').update(refreshToken).digest('hex');
+        const newHashedRefreshToken = crypto.createHash('sha256').update(newRefreshToken).digest('hex');
         await RefreshToken.create({ userId: userId, refreshToken: newHashedRefreshToken, status: 'issued' });
         res.json({ accessToken: newAccessToken, refreshToken: newRefreshToken, expiredIn: 60 });
     }
