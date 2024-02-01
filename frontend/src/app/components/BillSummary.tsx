@@ -35,10 +35,12 @@ export default function BillSummary() {
     }
 
     return (
-        <div className="w-[80%] bg-gray-200 mt-[10px] h-[50px] flex flex-column items-center justify-center">
-            {billSummary.map((divider) => {
-                return <div>
-
+        <div className="w-[80%] bg-gray-200 mt-[10px] flex py-[20px] flex-wrap">
+            {billSummary.map((divider, index) => {
+                return <div key={index} className="flex flex-row w-[400px] m-[20px] bg-yellow-300 h-[100px] ">
+                    <p>
+                        {divider.name}
+                    </p>
                 </div>
             })}
         </div>
