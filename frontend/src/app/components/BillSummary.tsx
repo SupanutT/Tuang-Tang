@@ -22,9 +22,9 @@ export default function BillSummary() {
     }
 
     const bill = useAppSelector((state) => state.BillSlice.bill)
-    console.log(bill)
+    // console.log(bill)
+    const billSummary = []
     if (bill) {
-        const billSummary = []
         billSummary.push(calBill(bill.owner_name, bill.billItems))
         bill.all_dividers.map((divider) => {
             billSummary.push(calBill(divider, bill.billItems))
@@ -36,7 +36,11 @@ export default function BillSummary() {
 
     return (
         <div className="w-[80%] bg-gray-200 mt-[10px] h-[50px] flex flex-column items-center justify-center">
-            hello
+            {billSummary.map((divider) => {
+                return <div>
+
+                </div>
+            })}
         </div>
     );
 
