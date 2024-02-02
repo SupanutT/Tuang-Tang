@@ -6,9 +6,9 @@ module.exports.showBill = async (req, res, next) => {
     const bill = await Bill.findById(req.params.id).populate({
         path: 'owner',
         select: 'name'
-    });;
-    const { id, owner, ...data } = bill.toJSON(); // Destructure owner field
-    res.send(data);
+    });
+    const { id, owner, ...data } = bill.toJSON();
+    res.status(200).json({ message: `Found one with id : ${req.params.id}`, ...data });
 };
 
 module.exports.showAllBill = async (req, res, next) => {
