@@ -8,12 +8,7 @@ module.exports.register = async (req, res) => {
         const { username, email, password, name } = req.body;
         const user = new User({ email, username, name });
         const registeredUser = await User.register(user, password);
-        const userId = registeredUser._id;
-        const accessToken = jwt.sign({ id: userId.toString() }, 'your-secret-key', { expiresIn: '15m' });
-        const refreshToken = jwt.sign({ id: userId.toString() }, 'refresh-secret', { expiresIn: '7d' });
-        const hashedRefreshToken = crypto.createHash('sha256').update(refreshToken).digest('hex');
-        await RefreshToken.create({ userId: userId, refreshToken: hashedRefreshToken, status: 'issued' });
-        res.status(200).send({ message: "Registered successfully!", accessToken: accessToken, refreshToken: refreshToken, expiredIn: 15 * 60 });
+        res.status(200).send({ message: "Registered successfully!" });
     } catch (e) {
         res.status(400).send(e);
     }
