@@ -3,20 +3,24 @@ const User = require('../models/user');
 const getItemDetail = require('../receipt-ocr/index');
 
 module.exports.showBill = async (req, res, next) => {
-    const bill = await Bill.findById(req.params.id).populate({
-        path: 'owner',
-        select: 'name'
-    });
+    const bill = await Bill.findById(req.params.id)
+        .populate({
+            path: 'owner',
+            select: 'name'
+        })
+        .select('-__v');
     const { id, owner, ...data } = bill.toJSON();
     res.status(200).json({ message: `Found one with id : ${req.params.id}`, data });
 };
 
 module.exports.showAllBill = async (req, res, next) => {
     const userId = req.user.id;
-    const bills = await Bill.find({ owner: userId }).populate({
-        path: 'owner',
-        select: 'name'
-    });
+    const bills = await Bill.find({ owner: userId })
+        .populate({
+            path: 'owner',
+            select: 'name'
+        })
+        .select('-__v');
 
     const data = bills.map(bill => {
         const { id, owner, ...restOfBill } = bill.toJSON(); // Destructure owner field
@@ -50,7 +54,7 @@ module.exports.createBill = async (req, res, next) => {
         bill.billItems.push({ ...item, dividers: [name] });
     });
     await bill.save();
-    res.status(200).send({ message: `Bill ${bill._id} is successfully created`, data: bill });
+    res.status(200).send({ message: `Bill ${bill._id} is successfully created`, data: { bill_id: bill._id } });
 };
 
 module.exports.updateBill = async (req, res, next) => {
@@ -64,5 +68,5 @@ module.exports.updateBill = async (req, res, next) => {
         bill.billItems.push({ ...restOfItem });
     });
     await bill.save();
-    res.status(200).send({ message: `Bill ${id} is successfully updated`, data: bill });
+    res.status(200).send({ message: `Bill ${id} is successfully updated`, data: { bill_id: bill._id } });
 };
