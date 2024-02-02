@@ -15,7 +15,7 @@ module.exports.register = async (req, res) => {
         await RefreshToken.create({ userId: userId, refreshToken: hashedRefreshToken, status: 'issued' });
         res.status(200).send({ message: "Registered successfully!", accessToken: accessToken, refreshToken: refreshToken, expiredIn: 15 * 60 });
     } catch (e) {
-        res.send(e);
+        res.status(400).send(e);
     }
 };
 
