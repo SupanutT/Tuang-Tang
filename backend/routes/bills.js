@@ -5,10 +5,11 @@ const bills = require('../controllers/bills');
 const multer = require('multer');
 const { storage } = require('../cloudinary');
 const upload = multer({ storage });
+const passport = require('passport');
 
 router
     .route('/')
-    .get(bills.showAllBill)
+    .get(passport.authenticate('jwt', { session: false }), bills.showAllBill)
     .post(upload.single('image'), bills.createBill);
 // .post(upload.single('image'), bills.createBill);
 // .post()
