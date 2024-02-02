@@ -7,3 +7,4 @@ export default async function getBills(){
 
     return await response.json()
 }
+

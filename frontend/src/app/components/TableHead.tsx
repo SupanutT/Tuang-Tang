@@ -1,9 +1,9 @@
 import HeadCell from "./HeadCell";
 import HeadDeleteAbleCell from "./HeadDeleteAbleCell";
 
-export default function TableHead( { dividers, onDeleteHeadClicked }: { dividers: string[], onDeleteHeadClicked: (position: string) => void }){
+export default function TableHead( { owner_name, dividers }: { owner_name: string, dividers: string[] }){
 
-    const headColumn = [ 'No', 'Menu', 'Quantity', 'Price', 'Me', ...dividers ]
+    const headColumn = [ 'No', 'Menu', 'Quantity', 'Price', owner_name, ...dividers ]
     return (
         <tr className="flex">
             {
@@ -21,11 +21,11 @@ export default function TableHead( { dividers, onDeleteHeadClicked }: { dividers
                         case('Price'):{
                             return <HeadCell key={index} value={col} id={`${col}_${index}`} width='100px'/>
                         }
-                        case('Me'):{
+                        case(owner_name):{
                             return <HeadCell key={index} value={col} id={`${col}_${index}`} width='100px'/>
                         }
                         default:{
-                            return <HeadDeleteAbleCell key={index} value={col} id={`${col}_${index}`} width='100px' onDeleteHeadClicked={onDeleteHeadClicked}/>
+                            return <HeadDeleteAbleCell key={index} value={col} id={`${col}_${index}`} width='100px'/>
                         }
                     }
                 })

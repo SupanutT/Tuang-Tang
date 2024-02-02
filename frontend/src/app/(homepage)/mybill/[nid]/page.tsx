@@ -1,4 +1,5 @@
 import Table from "@/app/components/Table";
+import Link from "next/link";
 
 export default function MyBillDetailPage( {params}: { params: {nid:string}}){
     return (

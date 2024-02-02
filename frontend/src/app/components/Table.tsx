@@ -1,38 +1,38 @@
 'use client'
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
-import { useReducer, useState } from "react";
+import { useReducer, useState, useContext, createContext } from "react";
+import Link from "next/link";
 import { useEffect } from "react";
+import { Bill } from "../../../interfaces";
+import { BillItem } from "../../../interfaces";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { setBill } from "@/redux/features/billSlice";
 
+interface BillFunctions {
+	handleCheckboxChange: (position: string, isChecked: boolean) => void,
+	handleDeleteDivider: (position: string) => void,
+	handleDeleteMenu: (position: string) => void,
+	handleEditCell: (position: string, text: string) => void
+}
 
-interface BillItem {
-	[key: string]: any
+const BillContext = createContext<BillFunctions | null>(null);
+
+export const useBillContext = () => {
+	const context = useContext(BillContext);
+	if (!context) {
+		throw new Error('useBillContext must be used within a BillProvider');
+	}
+	return context;
 };
 
-interface Bill {
-	_id: string,
-	name: string,
-	date: string,
-	image: {
-		filename: string,
-		url: string
-	},
-	owner_name: string,
-	all_dividers: string[]
-	billItems: {
-		_id: string
-		menu: string,
-		price: number
-		quantity: number,
-		dividers: string[]
-	}[]
-};
 
 export default function Table(){
 	console.log('Table component rendered');
 
 	const data = {
-			id: "sadkfhalkjdahasdfasdfasdf",
+			_id: "sadkfhalkjdahasdfasdfasdf",
 			name: "here moo",
 			date: "21/10/2545",
 			image: {
@@ -53,12 +53,13 @@ export default function Table(){
 		billItems: BillItem[],
 		action: {
 			type: string,
-			Menu: {
-				menu:string,
+			rowCell: {
+				menu: string,
 				quantity: number,
 				price: number,
 				position: string,
-				isChecked: boolean
+				isChecked: boolean,
+				text: string | number
 			}
 		}
 	) => {
@@ -68,30 +69,30 @@ export default function Table(){
 					...billItems,
 					{
 						_id: (billItems.length + 1).toString(),
-						menu: action.Menu.menu,
-						price: action.Menu.price,
-						quantity: action.Menu.quantity,
+						menu: action.rowCell.menu,
+						quantity: action.rowCell.quantity,
+						price: action.rowCell.price,
 						dividers: []
 					}
 				];
 			}
 			case('editCheckbox'):{
-				let [column, row]: string[] = action.Menu.position.split("_");
+				let [column, row]: string[] = action.rowCell.position.split("_");
 				const newBillItems = [...billItems];
 				const editBillItem: BillItem =  { ...newBillItems[Number(row)-1] };
 
-				if(action.Menu.isChecked){
+				if(action.rowCell.isChecked){
 					editBillItem.dividers.push(column);
 				}else{
 					editBillItem.dividers = editBillItem.dividers.filter((item: string) => item != column);
 				}
 				newBillItems[Number(row)-1] = editBillItem;
-				// console.log(newBillItems)
-				console.log(`[${Date.now()}] Updated billItems:`, newBillItems);
+				console.log(newBillItems)
+				// console.log(`[${Date.now()}] Updated billItems:`, newBillItems);
 				return newBillItems;
 			}
 			case('deleteDivider'):{
-				let deletedDivider = action.Menu.position.split("_")[0];
+				let deletedDivider = action.rowCell.position.split("_")[0];
 				const newBillItems = [...billItems].map((billItem) => {
 					billItem.dividers = billItem.dividers.filter((divider: string) => divider != deletedDivider)
 					return billItem
@@ -100,7 +101,23 @@ export default function Table(){
 				return newBillItems
 			}
 			case('deleteMenu'):{
-				return [...billItems].filter((billItem, index) => index != Number(action.Menu.position.split("_")[2]) - 1);
+				const newBillItems = [...billItems].filter((billItem, index) => index != Number(action.rowCell.position.split("_")[2]) - 1)
+				console.log(newBillItems)
+				return newBillItems
+			}
+			case('editMenu'):{
+				type BillItemPosition = "menu" | "quantity" | "price";
+				let text: string | number = action.rowCell.text;
+				const position: BillItemPosition = action.rowCell.position.split("_")[0] as BillItemPosition;
+				if(!(position === 'menu')){
+					text = Number(text) as number
+				}
+				const newBillItems = [...billItems]
+				const editBillItem = {...newBillItems[Number(action.rowCell.position.split("_")[1]) - 1], [position]: text}
+
+				newBillItems[Number(action.rowCell.position.split("_")[1]) - 1] = editBillItem;
+				console.log(newBillItems)
+				return newBillItems
 			}
 			default: {
 				return billItems;
@@ -135,19 +152,20 @@ export default function Table(){
 		if (newDivider.trim() !== '') {
 			dispatchDivider({ type: 'addDivider', divider: newDivider });
 			setNewDivider('');
-			}
+		}
 	}
 
 	function addNewMenu() {
 		if(newMenu.menu.trim() !== '' && Number(newMenu.quantity) > 0 && Number(newMenu.price) > 0){
 			dispatchBillItem({
 				type: 'addMenu',
-				Menu: {
+				rowCell: {
 					menu: newMenu.menu,
 					quantity: Number(newMenu.quantity),
 					price: Number(newMenu.price),
 					position: '',
-					isChecked: false
+					isChecked: false,
+					text: ''
 				}
 			})
 			setNewMenu({
@@ -159,17 +177,20 @@ export default function Table(){
 	}
 
 	function handleCheckboxChange(position: string, isChecked: boolean){
-		// console.log(`${position} ${isChecked}`)
+
 		dispatchBillItem({
 			type: 'editCheckbox',
-			Menu: {
+			rowCell: {
 				menu: '',
 				quantity: 0,
 				price: 0,
 				position: position,
-				isChecked: isChecked
+				isChecked: isChecked,
+				text: ''
 			}
 		})
+
+
 	}
 
 	function handleDeleteDivider(position: string){
@@ -180,12 +201,13 @@ export default function Table(){
 
 		dispatchBillItem({
 			type: 'deleteDivider',
-			Menu: {
+			rowCell: {
 				menu: '',
 				quantity: 0,
 				price: 0,
 				position: position,
-				isChecked: false
+				isChecked: false,
+				text: ''
 			}
 		});
 	}
@@ -193,27 +215,64 @@ export default function Table(){
 	function handleDeleteMenu(position: string){
 		dispatchBillItem({
 			type: 'deleteMenu',
-			Menu: {
+			rowCell: {
 				menu: '',
 				quantity: 0,
 				price: 0,
 				position: position,
-				isChecked: false
+				isChecked: false,
+				text: ''
+			}
+		})
+
+	}
+
+	function handleEditCell(position: string, text: string){
+		dispatchBillItem({
+			type: 'editMenu',
+			rowCell: {
+				menu: '',
+				quantity: 0,
+				price: 0,
+				position: position,
+				isChecked: false,
+				text: text
 			}
 		})
 	}
 
-	return (
-		<div className='absolute top-[20%] left-[5%]'>
-			<table className="shadow-black">
-				<thead>
-					<TableHead dividers={all_dividers} onDeleteHeadClicked={handleDeleteDivider}/>
-				</thead>
-				<tbody>
-					<TableBody owner_name={data.owner_name} all_dividers={all_dividers} all_billItems={billItems} onCheckboxChange={handleCheckboxChange} onDeleteMenuClicked={handleDeleteMenu}/>
-				</tbody>
-			</table>
+	const dispatch = useDispatch<AppDispatch>();
+	const handleSubmit = () => {
+		const updatedBill: Bill = {
+			_id: data._id,
+			name: data.name,
+			date: data.date,
+			image: data.image,
+			owner_name: data.owner_name,
+			all_dividers: all_dividers,
+			billItems: billItems
+		}
+		dispatch(setBill(updatedBill));
+	}
 
+	const allFunctions = {
+		handleCheckboxChange: handleCheckboxChange,
+		handleDeleteDivider: handleDeleteDivider,
+		handleDeleteMenu: handleDeleteMenu,
+		handleEditCell: handleEditCell
+	}
+
+	return (
+		<BillContext.Provider value={allFunctions}>
+			<div className='absolute top-[20%] left-[5%]'>
+				<table className="shadow-black">
+					<thead>
+						<TableHead owner_name={data.owner_name} dividers={all_dividers}/>
+					</thead>
+					<tbody>
+						<TableBody owner_name={data.owner_name} all_dividers={all_dividers} all_billItems={billItems} />
+					</tbody>
+				</table>
 
 				<div className="flex items-center border-b border-teal-500 py-3 bg-black">
 					<input className="appearance-none bg-transparent border-none w-[200px] text-white ml-[50px] py-2 px-2 leading-tight focus:outline-none " type="text" placeholder="New Menu" value={newMenu.menu} onChange={(e)=>{
@@ -241,15 +300,20 @@ export default function Table(){
 
 				<div className="flex items-center border-b border-teal-500 py-2 px-3 bg-white opacity-50">
 					<input className="appearance-none bg-transparent border-none w-full text-gray-800 mr-10% py-2 px-2 leading-tight focus:outline-none " type="text" placeholder="New Divider" value={newDivider} onChange={(e)=>{
-						setNewDivider(e.target.value)
+						setNewDivider(e.target.value);
 					}}/>
 					<button className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-2 px-3 rounded" type="button" onClick={()=>addNewDivider()} >
 						Add Divider
 					</button>
 				</div>
 
-
-		</div>
+				<Link href={`/mybill/${data._id}/summary`} className="fixed bottom-8 right-8">
+					<button type="button" className="h-[50px] bg-zinc-800 px-[20px] text-white rounded-lg" onClick={() => handleSubmit()}>
+						Submit
+					</button>
+				</Link>
+			</div>
+		</BillContext.Provider>
 	);
 }
 

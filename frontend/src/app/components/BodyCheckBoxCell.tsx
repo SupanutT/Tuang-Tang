@@ -1,18 +1,19 @@
+import { useBillContext } from "./Table";
+
 export default function BodyCheckBoxCell( {
     isChecked,
     width,
-    id,
-    onCheckboxChange
+    id
 }: {
     isChecked: boolean,
     width: string,
-    id: string,
-    onCheckboxChange: (position: string, isChecked: boolean) => void
+    id: string
 }) {
+    const handleCheckboxChange = useBillContext().handleCheckboxChange;
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         // console.log('Checkbox Clicked in BodyCheckBoxCell');
-        onCheckboxChange(id, event.target.checked);
+        handleCheckboxChange(id, event.target.checked);
     }
 
     return (

@@ -2,10 +2,7 @@
 import BillCard from "./BillCard";
 import Link from "next/link";
 import getBills from "@/libs/getBills";
-
-interface Bill {
-    [key: string]: any
-}
+import { Bill } from "../../../interfaces";
 
 export default async function BillList() {
 
