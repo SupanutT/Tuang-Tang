@@ -8,15 +8,12 @@ module.exports.showBill = async (req, res, next) => {
         select: 'name'
     });
     const { id, owner, ...data } = bill.toJSON();
-    res.status(200).json({ message: `Found one with id : ${req.params.id}`, ...data });
+    res.status(200).json({ message: `Found one with id : ${req.params.id}`, data });
 };
 
 module.exports.showAllBill = async (req, res, next) => {
-    // const;
-
-
-
-    const bills = await Bill.find().populate({
+    const userId = req.user.id;
+    const bills = await Bill.find({ owner: userId }).populate({
         path: 'owner',
         select: 'name'
     });
@@ -28,50 +25,44 @@ module.exports.showAllBill = async (req, res, next) => {
             owner_name: bill.owner_name
         };
     });
-    res.send(data);
+    res.status(200).json({ message: `Found ${bills.length} bills`, data });
 };
 
 module.exports.testOcr = async (req, res, next) => {
     const itemDetail = await getItemDetail();
     console.log(itemDetail);
     res.send(itemDetail);
-
 };
 
 module.exports.createBill = async (req, res, next) => {
-    const bill = new Bill({ ...req.body.bill, date: new Date() });
-    // const userId = req.user.id;
-    const userId = "65ae9d6147bebe18165a9c9e";
+    const userId = req.user.id;
+    const bill = new Bill({ ...req.body.bill, date: new Date(), owner: userId });
     const { name } = User.findById(userId);
     try {
         bill.image = { filename: req.file.filename, url: req.file.path };
     } catch (e) {
         console.error(e);
-        return res.send('Image is NOT uploaded. Please try again!');
+        return res.status(400).send('Image is NOT uploaded. Please try again!');
     }
     const itemDetail = await getItemDetail();
-    bill.owner = userId;
     bill.all_dividers = [];
     itemDetail.map((item) => {
         bill.billItems.push({ ...item, dividers: [name] });
     });
     await bill.save();
-    res.send(bill._id);
+    res.status(200).send({ message: `Bill ${bill._id} is successfully created`, data: bill });
 };
 
 module.exports.updateBill = async (req, res, next) => {
     const { id } = req.params;
-    const { data } = req.body;
+    const { updatedData } = req.body;
     const { billItems, restOfData } = data;
     const bill = await Bill.findByIdAndUpdate(id, { ...restOfData });
     bill.billItems = [];
-    data.billItems.map((item) => {
+    updatedData.billItems.map((item) => {
         const { _id, ...restOfItem } = item;
         bill.billItems.push({ ...restOfItem });
     });
     await bill.save();
-    res.send(data.billItems);
-    // res.send(updatedBill);
-
-
+    res.status(200).send({ message: `Bill ${id} is successfully updated`, data: bill });
 };
