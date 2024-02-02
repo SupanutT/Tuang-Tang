@@ -10,28 +10,33 @@ export default function TableBody({
 	all_billItems: BillItem[],
 	all_dividers: string[],
 }) {
+	// console.log(all_billItems)
+	const processBillItems = () => {
+		return all_billItems.map(({ dividers, _id, menu, quantity, price }) => {
+			const dividersMap: { [key: string]: boolean } = {};
 
-	const processBillItems = ()=>{
-		return all_billItems.map(({ dividers, ...rest }) => {
-		const dividersMap: { [key: string]: boolean } = {};
+			all_dividers.forEach((divider) => {
+				dividersMap[divider as string] = dividers.includes(divider);
+			});
 
-		all_dividers.forEach((divider) => {
-			dividersMap[divider as string] = dividers.includes(divider);
-		});
+			const owner = dividers.includes(owner_name)
 
-		const owner = dividers.includes(owner_name)
-
-		return {
-			...rest,
-			[owner_name]: owner,
-			...dividersMap,
-		};
+			return {
+				_id: _id,
+				menu: menu,
+				quantity: quantity,
+				price: price,
+				[owner_name]: owner,
+				...dividersMap,
+			};
 		});
 	};
+	// console.log(processBillItems())
+
 
 	return (
-		processBillItems().map((item, index)=>{
-			return <TableData key={index+1} item={item} num={index+1} />
+		processBillItems().map((item, index) => {
+			return <TableData key={index + 1} item={item} num={index + 1} />
 		})
 	);
 }

@@ -1,10 +1,9 @@
-'use client'
-
 import BillList from "../../components/BiilList";
 import AddBill from "@/app/components/AddBill";
 
 
-export default function MyBill() {
+export default async function MyBill() {
+
 
 
     return (
