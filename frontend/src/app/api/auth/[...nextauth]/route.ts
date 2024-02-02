@@ -72,11 +72,10 @@ export const authOptions: AuthOptions = {
           accessTokenExpires: Date.now() + user.expiredIn * 1000
         }
       }
-      if (Date.now() > token.accessTokenExpires) {
-        return await refreshAccessToken(token)
+      if (Date.now() < token.accessTokenExpires) {
+        return token
       }
-      return token
-
+      return await refreshAccessToken(token)
 
     },
     async session({ session, token, user }) {
