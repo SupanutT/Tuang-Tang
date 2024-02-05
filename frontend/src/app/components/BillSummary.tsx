@@ -1,6 +1,4 @@
-'use client'
-import { useAppSelector } from "@/redux/store";
-import { BillItem } from "../../../interfaces";
+import { BillItem, Bill } from "../../../interfaces";
 
 interface BillList {
     [key: string]: number
@@ -14,7 +12,7 @@ interface BillResult {
     billresult: number
 }
 
-export default function BillSummary() {
+export default function BillSummary({ all_dividers, owner_name, billItems }: { all_dividers: string[], owner_name: string, billItems: BillItem[] }) {
 
     const calBill = (name: string, billItems: BillItem[]) => {
         let billResult = 0;
@@ -29,28 +27,22 @@ export default function BillSummary() {
         })
         return { name: name, billlist: billList, billresult: billResult * 100 % 100 != 0 ? Number(billResult).toFixed(2) : Number(billResult).toFixed(0) }
     }
-
-    const bill = useAppSelector((state) => state.BillSlice.bill)
     // console.log(bill)
     const billSummary = []
     let bill_split_zero: any[] = []
     let bill_split_one: any[] = []
     let bill_split_two: any[] = []
 
-    if (bill) {
-        billSummary.push(calBill(bill.owner_name, bill.billItems))
-        bill.all_dividers.map((divider) => {
-            billSummary.push(calBill(divider, bill.billItems))
-        })
-        console.log(billSummary)
+    billSummary.push(calBill(owner_name, billItems))
+    all_dividers.map((divider) => {
+        billSummary.push(calBill(divider, billItems))
+    })
+    // console.log(billSummary)
 
-        bill_split_zero = billSummary.filter((divider, index) => index % 3 == 0)
-        bill_split_one = billSummary.filter((divider, index) => index % 3 == 1)
-        bill_split_two = billSummary.filter((divider, index) => index % 3 == 2)
+    bill_split_zero = billSummary.filter((divider, index) => index % 3 == 0)
+    bill_split_one = billSummary.filter((divider, index) => index % 3 == 1)
+    bill_split_two = billSummary.filter((divider, index) => index % 3 == 2)
 
-    } else {
-        console.error("Error! do not found bill");
-    }
 
     return (
         <div className="w-[90%] mt-[20px] flex flex-row pb-[20px] justify-center rounded-lg">

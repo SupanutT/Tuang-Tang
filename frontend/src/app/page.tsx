@@ -1,39 +1,19 @@
-'use client';
 
-import { useState, useEffect } from 'react';
-
-import SavingsIcon from '@mui/icons-material/Savings';
-import Link from 'next/link';
-
-import { useRouter } from 'next/navigation';
+import TopMenuHomePage from "./components/TopMenuHomePage";
+import Image from "next/image";
 
 export default function Home() {
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const router = useRouter();
 
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className='h-[50px] bg-orange-200 fixed top-0 right-0 left-0 z-30 border-y-2 border-black w-[100%] flex items-center'>
-            <Link href={`/mybill`} className='h-[100%] w-1/12 flex justify-center items-center'>
-                <SavingsIcon sx={{ fontSize: 40 }} />
-            </Link>
-            <div className='flex flex-row h-full absolute right-0'>
-              <Link href={`/api/auth/signin`}>
-                <div className="px-[10px] h-[100%] hover:bg-yellow-100 flex justify-center items-center font-serif text-sm text-black cursor-pointer ">
-                  Sign In
-                </div>
-              </Link>
-              <Link href={`/register`}>
-                <div className="px-[10px] h-[100%] hover:bg-yellow-100 flex justify-center items-center font-serif text-sm text-black cursor-pointer" >
-                  Sign Up
-                </div>
-              </Link>
-            </div>
-        </div>
-
-        <h1>Hello Welcome</h1>
-    </main>
-  );
+	return (
+		<main className="text-center">
+			<TopMenuHomePage />
+			<div className="bg-[url('/img/piggybank.png')] h-[600px] w-full mt-[50px] px-[90px] py-[75px] bg-contain bg-fixed ">
+				<div className="h-full w-1/2 flex items-center">
+					<Image src={'/img/logo.png'} alt='logo' width={0} layout='responsive' height={0} className='w-full h-auto' />
+				</div>
+			</div>
+			<h1>Hello Welcome</h1>
+		</main>
+	);
 }

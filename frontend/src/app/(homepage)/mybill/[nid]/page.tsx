@@ -8,9 +8,9 @@ export default async function MyBillDetailPage({ params }: { params: { nid: stri
     // console.log(data)
 
     return (
-        <main className="mt-[50px] px-[10px] bg-gradient-to-tr from-sky-500 to-orange-300 ">
-            <div className="text-md">
-                MyBill ID {params.nid}
+        <main className="min-h-screen mt-[50px] px-[10px] bg-gradient-to-tr from-sky-500 to-orange-300 bg-cover bg-fixed">
+            <div className="text-3xl pt-[20px] pl-[50px]">
+                {data.name}
             </div>
             <Table data={data} />
 
