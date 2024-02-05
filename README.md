@@ -133,4 +133,6 @@ As we kick off our project, we want to quickly recap what we've done each day. T
 
 - 29 Jan : Integrating the authentication system with Next Auth
 
+- 30 Jan - 5 Feb : Restructuring and Refactoring the code both in frontend and backend, Resolving the problems in display bill items page
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
