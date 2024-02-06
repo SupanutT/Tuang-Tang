@@ -8,7 +8,7 @@ export default async function MyBillDetailPage({ params }: { params: { nid: stri
     // console.log(data)
 
     return (
-        <main className="min-h-screen mt-[50px] px-[10px] bg-gradient-to-tr from-sky-500 to-orange-300 bg-cover bg-fixed">
+        <main className="min-h-screen mt-[70px] px-[10px] bg-gradient-to-tr from-sky-500 to-orange-300 bg-cover bg-fixed">
             <div className="text-3xl pt-[20px] pl-[50px]">
                 {data.name}
             </div>
