@@ -59,11 +59,11 @@ module.exports.createBill = async (req, res, next) => {
 
 module.exports.updateBill = async (req, res, next) => {
     const { id } = req.params;
-    const { updatedData } = req.body;
+    const { data } = req.body;
     const { billItems, restOfData } = data;
     const bill = await Bill.findByIdAndUpdate(id, { ...restOfData });
     bill.billItems = [];
-    updatedData.billItems.map((item) => {
+    data.billItems.map((item) => {
         const { _id, ...restOfItem } = item;
         bill.billItems.push({ ...restOfItem });
     });
