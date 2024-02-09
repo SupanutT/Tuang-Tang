@@ -23,7 +23,7 @@ export default function UploadImg() {
                 formData.append('image', selectedFile);
 
                 try {
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/api/bills`, {
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/bills`, {
                         method: 'POST',
                         body: formData,
                     });
@@ -31,7 +31,7 @@ export default function UploadImg() {
                     if (response.ok) {
                         // Handle successful response from the backend
                         const data = await response.json();
-                        console.log(response);
+                        console.log(data);
                     } else {
                         // Handle error response from the backend
                         console.error('Error:', response.status, response.statusText);
@@ -53,7 +53,7 @@ export default function UploadImg() {
     return (
         <main className="mt-[120px] w-[100%] flex items-center justify-center flex-col">
             <div className="w-1/2 ">
-                <form action={`${process.env.NEXT_PUBLIC_BACKEND_API}/api/bills`} method="POST" encType="multipart/form-data" className='flex flex-col justify-center items-center'>
+                <form action={`${process.env.NEXT_PUBLIC_BACKEND_API}/bills`} method="POST" encType="multipart/form-data" className='flex flex-col justify-center items-center'>
 
                     <label htmlFor="dropzone-file"
                         className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-500 border-dashed rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300  ">
@@ -67,7 +67,7 @@ export default function UploadImg() {
                                 </span> or drag and drop
                             </p>
                             <p className="text-xs text-gray-500">
-                                SVG, PNG, JPG or GIF
+                                JPEG, PNG or JPG
                             </p>
                         </div>
                         <input id="dropzone-file" type="file" className="hidden" name="image" onChange={handleFileChange} />
