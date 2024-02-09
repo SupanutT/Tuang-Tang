@@ -10,7 +10,7 @@ const passport = require('passport');
 router
     .route('/')
     .get(passport.authenticate('jwt', { session: false }), bills.showAllBill)
-    .post(upload.single('image'), bills.createBill);
+    .post(passport.authenticate('jwt', { session: false }), upload.single('image'), bills.createBill);
 // .post(upload.single('image'), bills.createBill);
 // .post()
 
