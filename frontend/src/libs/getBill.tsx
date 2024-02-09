@@ -1,9 +1,29 @@
-export default async function getBill( { params }: { params: {nid: string}}){
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/bills/${params.nid}`)
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
-    if(!response.ok){
-        throw new Error("Failed to fetch bill")
+export default async function getBill({ params }: { params: { nid: string } }) {
+
+    const session = await getServerSession(authOptions);
+
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/bills/${params.nid}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${session.accessToken}`
+            },
+
+        })
+
+        const response = await res.json();
+        // console.log(response.data)
+        const data = response.data
+
+        return data
+
+    } catch (error) {
+        throw new Error("Failed to get bills");
     }
-
-    return await response.json()
 }
+
+
