@@ -33,7 +33,7 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 
-const allowedOrigins = ['https://www.tuang-tang.site'];
+const allowedOrigins = ['https://www.tuang-tang.site', 'http://localhost:3000'];
 const corsOptions = {
     origin: function (origin, callback) {
         if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
