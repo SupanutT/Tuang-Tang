@@ -33,11 +33,19 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 
+const allowedOrigins = ['https://www.tuang-tang.site'];
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+};
+
 app.use(express.json());
-app.use(cors({
-    credentials: true,
-    origin: ['https://www.tuang-tang.site', 'http://localhost:3000']
-}));
+app.use(cors(corsOptions));
 
 const jwtOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
