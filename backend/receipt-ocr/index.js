@@ -25,8 +25,9 @@ const getLocalFilePath = async () => {
                 reject(err);
             });
 
-            fileStream.on('finish', () => {
+            fileStream.on('finish', async () => {
                 console.log('Download complete');
+                await delay(15000); // wait 15 seconds for getting the file path
                 resolve(localFilePath);
             });
         } catch (error) {

@@ -46,7 +46,7 @@ module.exports.createBill = async (req, res, next) => {
         bill.image = { filename: req.file.filename, url: req.file.path };
     } catch (e) {
         console.error(e);
-        return res.status(400).send('Image is NOT uploaded. Please try again!');
+        return res.status(400).send({ message: 'Image is NOT uploaded. Please try again!' });
     }
     const itemDetail = await getItemDetail();
     bill.all_dividers = [];
