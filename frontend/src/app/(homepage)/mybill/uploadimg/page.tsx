@@ -1,11 +1,15 @@
 
 'use client'
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 
 export default function UploadImg() {
 
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const { data: session } = useSession();
+    const router = useRouter();
 
     function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
         const file = event.target.files && event.target.files[0];
@@ -23,18 +27,21 @@ export default function UploadImg() {
                 formData.append('image', selectedFile);
 
                 try {
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/bills`, {
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/bills`, {
                         method: 'POST',
+                        headers: {
+                            "Authorization": `Bearer ${session?.accessToken}`
+                        },
                         body: formData,
                     });
 
-                    if (response.ok) {
+                    if (res.ok) {
                         // Handle successful response from the backend
-                        const data = await response.json();
-                        console.log(data);
+                        const response = await res.json();
+                        router.push(`/mybill/${response.data.bill_id}`);
                     } else {
                         // Handle error response from the backend
-                        console.error('Error:', response.status, response.statusText);
+                        console.error('Error:', res.status, res.statusText);
                     }
                 } catch (error) {
                     // Handle network errors
@@ -53,7 +60,7 @@ export default function UploadImg() {
     return (
         <main className="mt-[120px] w-[100%] flex items-center justify-center flex-col">
             <div className="w-1/2 ">
-                <form action={`${process.env.NEXT_PUBLIC_BACKEND_API}/bills`} method="POST" encType="multipart/form-data" className='flex flex-col justify-center items-center'>
+                <form action={handleFileUpload} method="POST" encType="multipart/form-data" className='flex flex-col justify-center items-center'>
 
                     <label htmlFor="dropzone-file"
                         className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-500 border-dashed rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300  ">
@@ -75,7 +82,7 @@ export default function UploadImg() {
 
 
                     <div className="w-1/5 mt-[30px] flex justify-center h-[50px] px-[15px] cursor-pointer bg-gray-200 hover:bg-gray-300 rounded-full ">
-                        <button className="text-base text-gray-600" type='button' onClick={handleFileUpload}>
+                        <button className="text-base text-gray-600" type='submit'>
                             Submit
                         </button>
                     </div>
