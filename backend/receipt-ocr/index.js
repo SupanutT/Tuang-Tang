@@ -1,6 +1,4 @@
 const receiptOcrEndpoint = 'https://ocr.asprise.com/api/v1/receipt';
-const imageUrl = 'https://res.cloudinary.com/dgwfiyuty/image/upload/v1705516731/tuang-tang/fxlafxtfga631navcyfx.jpg';
-const localFilePath = 'localImage.jpg';
 
 const axios = require('axios');
 const fs = require('fs');
@@ -8,16 +6,16 @@ const request = require('request-promise-native');
 const { cleanData } = require('../utils/cleanData');
 const { data } = require('./data');
 
-const getLocalFilePath = async () => {
+const getLocalFilePath = async (filename, url) => {
     return new Promise(async (resolve, reject) => {
         try {
             const response = await axios({
                 method: 'get',
-                url: imageUrl,
+                url: url,
                 responseType: 'stream',
             });
 
-            const fileStream = fs.createWriteStream(localFilePath);
+            const fileStream = fs.createWriteStream(filename);
             response.data.pipe(fileStream);
 
             fileStream.on('error', (err) => {
@@ -27,8 +25,7 @@ const getLocalFilePath = async () => {
 
             fileStream.on('finish', async () => {
                 console.log('Download complete');
-                await delay(15000); // wait 15 seconds for getting the file path
-                resolve(localFilePath);
+                resolve(filename);
             });
         } catch (error) {
             console.error(`Error downloading image: ${error.message}`);
@@ -37,9 +34,9 @@ const getLocalFilePath = async () => {
     });
 };
 
-const getItemDetail = async () => {
+const getItemDetail = async (filename, url) => {
     try {
-        const resolvedLocalFilePath = await getLocalFilePath();
+        const resolvedLocalFilePath = await getLocalFilePath(filename, url);
         const body = await request.post({
             url: receiptOcrEndpoint,
             formData: {
@@ -52,12 +49,14 @@ const getItemDetail = async () => {
         const ocrResult = JSON.parse(body);
         console.log(ocrResult.receipts[0]);
         const items = ocrResult.receipts[0].items;
+        const merchantName = ocrResult.receipts[0].merchant_name;
         const cleanedData = cleanData(items);
-        return cleanedData;
+        return { cleanedData, merchantName };
     } catch (error) {
         console.error(error);
         console.log("error");
-        return cleanData(data);
+        const cleanedData = cleanData(data);
+        return { cleanedData, merchantName: "ชื่อร้านอาหาร" };
     }
 };
 
