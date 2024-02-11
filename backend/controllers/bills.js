@@ -41,18 +41,24 @@ module.exports.testOcr = async (req, res, next) => {
 module.exports.createBill = async (req, res, next) => {
     const userId = req.user.id;
     const bill = new Bill({ ...req.body.bill, date: new Date(), owner: userId });
-    const { name } = User.findById(userId);
+    const { name } = await User.findById(userId);
     try {
         bill.image = { filename: req.file.filename, url: req.file.path };
     } catch (e) {
         console.error(e);
         return res.status(400).send({ message: 'Image is NOT uploaded. Please try again!' });
     }
-    const itemDetail = await getItemDetail();
+    const urlParts = bill.image.url.split("/");
+    const filenameWithType = urlParts[urlParts.length - 1];
+    const { cleanedData, merchantName } = await getItemDetail(filenameWithType, bill.image.url);
     bill.all_dividers = [];
-    itemDetail.map((item) => {
+    cleanedData.map((item) => {
         bill.billItems.push({ ...item, dividers: [name] });
     });
+    const todayDate = new Date().
+        toLocaleString('en-us', { year: 'numeric', month: '2-digit', day: '2-digit' }).
+        replace(/(\d+)\/(\d+)\/(\d+)/, '$2/$1/$3');
+    bill.name = `${merchantName} (${todayDate})`;
     await bill.save();
     res.status(200).send({ message: `Bill ${bill._id} is successfully created`, data: { bill_id: bill._id } });
 };
