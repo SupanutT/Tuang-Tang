@@ -135,4 +135,8 @@ As we kick off our project, we want to quickly recap what we've done each day. T
 
 - 30 Jan - 5 Feb : Restructuring and Refactoring the code both in frontend and backend, Resolving the problems in display bill items page
 
+- 6 Feb - 11 Jan : Testing connection between frontend and backend about file uploading and updating data (still in progress)
+
+- Note : The development process will slow down in this period of time because the developer team is handling the term project. We will be back in couple days!
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
