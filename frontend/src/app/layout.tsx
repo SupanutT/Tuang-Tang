@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Open_Sans } from 'next/font/google';
 import './globals.css';
 import ReduxProvider from '@/redux/ReduxProvider';
 import { getServerSession } from 'next-auth';
@@ -8,6 +8,10 @@ import NextAuthProvider from '@/providers/NextAuthProvider';
 
 
 const inter = Inter({ subsets: ['latin'] });
+const openSans = Open_Sans({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: 'Tuang Tang',
@@ -26,7 +30,7 @@ export default async function RootLayout({
     <html lang="en">
       <title>Tuang Tang</title>
 
-      <body className={inter.className}>
+      <body className={openSans.className}>
         <ReduxProvider>
           <NextAuthProvider session={session}>
             {children}
