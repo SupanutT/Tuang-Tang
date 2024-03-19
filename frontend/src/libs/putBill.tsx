@@ -5,8 +5,10 @@ export default async function putBill(data: Bill) {
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/bills/${data._id}`, {
             method: "PUT",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
             },
             body: JSON.stringify({
                 data: {
