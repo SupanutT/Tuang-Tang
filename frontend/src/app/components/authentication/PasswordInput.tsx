@@ -75,7 +75,7 @@ export default function PasswordInput({
         {fromLoginPage && (
           <p className="mt-[6px] text-sm leading-5 text-[#326FE2] hover:underline hover:underline-offset-2 cursor-pointer">
             {" "}
-            ลืมรหัสผ่าน
+            Forgot password?
           </p>
         )}
         {warning && (

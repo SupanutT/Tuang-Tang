@@ -2,12 +2,12 @@
 import Title from "./Title";
 import LoginViaGoogle from "./LoginViaGoogle";
 import Line from "./Line";
-import LoginViaEmail from "./LoginViaEmail";
+import LoginViaUsername from "./LoginViaUsername";
 
 export default function Login() {
   return (
-    <div className="flex flex-col w-[280px] mt-[40px]">
-      <Title title="เข้าสู่ระบบ" highlightText="" highlightColor="" />
+    <div className="flex flex-col w-[300px] mt-[40px]">
+      <Title title="Sign in" highlightText="" highlightColor="" />
 
       <div className="mt-[30px] text-[#64748B] leading-6 text-sm w-full">
         <LoginViaGoogle />
@@ -15,7 +15,7 @@ export default function Login() {
       </div>
 
       {/* Login via Email Component */}
-      <LoginViaEmail />
+      <LoginViaUsername />
     </div>
   );
 }

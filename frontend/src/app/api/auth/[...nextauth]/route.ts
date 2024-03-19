@@ -41,6 +41,12 @@ async function refreshAccessToken(token: Token) {
 }
 
 export const authOptions: AuthOptions = {
+    secret: process.env.NEXTAUTH_SECRET,
+    pages: {
+        signIn: "/login",
+        signOut: "/login",
+        error: "/login",
+    },
     providers: [
         CredentialsProvider({
 

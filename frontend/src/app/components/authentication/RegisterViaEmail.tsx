@@ -1,4 +1,3 @@
-
 import Input from "./Input"
 import PasswordInput from "./PasswordInput"
 import Link from "next/link"
@@ -50,7 +49,7 @@ export default function RegisterViaEmail() {
 
       if (response.ok) {
         console.log('Register successfully')
-        //   router.push('/mybill')
+        router.push('/mybill')
 
         // Handle successful login, e.g., redirect to another page
       } else {

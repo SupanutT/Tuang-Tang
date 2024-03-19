@@ -3,25 +3,26 @@ import Input from "./Input"
 import PasswordInput from "./PasswordInput"
 import { useState } from "react"
 import { signIn } from "next-auth/react"
+import userLogIn from "@/libs/userLogIn"
 
 type Error = {
-  email: string
+  username: string
   password: string
 }
 
 type Form = {
-  email: string
+  username: string
   password: string
 }
 
-export default function LoginViaEmail() {
+export default function LoginViaUsername() {
   const [form, setForm] = useState<Form>({
-    email: "",
+    username: "",
     password: "",
   })
 
   const [errors, setErrors] = useState<Error>({
-    email: "",
+    username: "",
     password: "",
   })
 
@@ -37,40 +38,40 @@ export default function LoginViaEmail() {
     // const password_pattern = /^.{8}$/
     let success = true
     const errors: Error = {
-      email: "",
+      username: "",
       password: "",
     }
-    if (form.email === "") {
-      errors.email = "กรอกที่อยู่อีเมลของคุณ"
+    if (form.username === "" || form.password === "") {
+      errors.username = form.username === "" ? "Please enter your username" : ""
+      errors.password = form.password === "" ? "Please enter your password" : ""
       success = false
-    } else if (!email_pattern.test(form.email)) {
-      errors.email = "อีเมลไม่ถูกต้อง"
+    } else if (false) { //username is not in database
+      errors.username = "Please enter a valid username address"
       success = false
-    }
-
-    if (form.password === "") {
-      errors.password = "กรอกรหัสผ่านของคุณ"
-      success = false
-    } else if (form.password.length < 8) {
-      errors.password = "รหัสผ่านไม่ถูกต้อง"
+    } else if (false) {
+      errors.password = "Invalid password"
       success = false
     }
 
     return { errors, success }
   }
 
-  const handleValidation = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleValidation = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    // console.log(event.target)
     const { errors, success } = validateForm()
     if (!success) {
       setErrors(errors)
       return
     } else {
-      signIn("credentials", {
-        email: form.email,
-        password: form.password,
-        callbackUrl: "/landing",
-      })
+      const user = await userLogIn(form.username, form.username);
+      if (user) {
+        signIn("credentials", {
+          username: form.username,
+          password: form.password,
+          callbackUrl: "/mybill",
+        })
+      }
     }
   }
 
@@ -78,12 +79,12 @@ export default function LoginViaEmail() {
     <form className="mt-[10px] w-full" onSubmit={handleValidation} noValidate>
       {/* Email Input Component */}
       <Input
-        name="email"
-        label="อีเมล"
-        inputType="email"
-        warning={errors.email}
+        name="username"
+        label="Username"
+        inputType="text"
+        warning={errors.username}
         handleChange={handleChange}
-        value={form.email}
+        value={form.username}
       />
 
       {/* Password Input Component */}
@@ -97,15 +98,15 @@ export default function LoginViaEmail() {
       <button
         type="submit"
         className="w-full bg-[#334155] hover:bg-slate-600 rounded-lg text-white mt-[30px] px-[16px] py-[8px] text-md ">
-        เข้าสู่ระบบ
+        Sign in
       </button>
 
       <p className="w-full text-center text-sm mt-[10px]">
-        ไม่เคยมีบัญชี ?{" "}
+        No account? {" "}
         <Link
           href={"/register"}
           className="text-[#326FE2] hover:underline hover:underline-offset-2">
-          สร้างบัญชี
+          Create account
         </Link>
       </p>
     </form>
