@@ -1,16 +1,23 @@
 import type { Metadata } from 'next';
-import { Inter, Open_Sans } from 'next/font/google';
+import { Inter, IBM_Plex_Sans_Thai } from "next/font/google";
 import './globals.css';
 import ReduxProvider from '@/redux/ReduxProvider';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]/route';
 import NextAuthProvider from '@/providers/NextAuthProvider';
+import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from "clsx"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
 
 
 const inter = Inter({ subsets: ['latin'] });
-const openSans = Open_Sans({
-  weight: ["400", "500", "600", "700"],
-  subsets: ["latin"],
+const ibmPlexSansThaiLooped = IBM_Plex_Sans_Thai({
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  subsets: ["thai"],
+  variable: "--ibm-plex-sans-thai-font",
 });
 
 export const metadata: Metadata = {
@@ -30,7 +37,10 @@ export default async function RootLayout({
     <html lang="en">
       <title>Tuang Tang</title>
 
-      <body className={openSans.className}>
+      <body className={cn(
+        inter.className,
+        ibmPlexSansThaiLooped.className,
+      )}>
         <ReduxProvider>
           <NextAuthProvider session={session}>
             {children}
