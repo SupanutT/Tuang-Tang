@@ -18,14 +18,13 @@ export default function TopMenuHomePage() {
                 <SavingsIcon sx={{ fontSize: 40 }} />
             </Link>
             {session ? <TopMenuItem title='My Bill' pageRef='mybill' /> : null}
-            {session ? <TopMenuItem title='Other Bill' pageRef='otherbill' /> : null}
             {session ?
                 <div className='rounded-full flex flex-row h-4/5 absolute right-5 overflow-hidden border border-black'>
                     <Image src={'/img/Jai.jpg'} alt='profile' height={0} width={0} layout='responsive' className='h-full' />
                 </div>
                 :
                 <div className='flex flex-row h-full absolute right-0'>
-                    <Link href={`/api/auth/signin`}>
+                    <Link href={`/login`}>
                         <div className="px-[20px] h-[100%] hover:bg-yellow-100 flex justify-center items-center font-serif text-sm text-black cursor-pointer ">
                             Sign In
                         </div>
