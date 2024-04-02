@@ -3,7 +3,6 @@ import Input from "./Input"
 import PasswordInput from "./PasswordInput"
 import { useState } from "react"
 import { signIn } from "next-auth/react"
-import userLogIn from "@/libs/userLogIn"
 
 type Error = {
   username: string
@@ -56,27 +55,25 @@ export default function LoginViaUsername() {
     return { errors, success }
   }
 
-  const handleValidation = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const handleValidation = async () => {
+    // event.preventDefault()
     // console.log(event.target)
     const { errors, success } = validateForm()
     if (!success) {
       setErrors(errors)
       return
     } else {
-      const user = await userLogIn(form.username, form.username);
-      if (user) {
-        signIn("credentials", {
-          username: form.username,
-          password: form.password,
-          callbackUrl: "/mybill",
-        })
-      }
+      signIn("credentials", {
+        username: form.username,
+        password: form.password,
+        callbackUrl: "/mybill",
+      })
+
     }
   }
 
   return (
-    <form className="mt-[10px] w-full" onSubmit={handleValidation} noValidate>
+    <form className="mt-[10px] w-full" action={handleValidation} noValidate>
       {/* Email Input Component */}
       <Input
         name="username"

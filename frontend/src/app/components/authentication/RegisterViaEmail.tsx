@@ -35,7 +35,7 @@ export default function RegisterViaEmail() {
 
 
   const handleRegistration = async (formData: FormData) => {
-
+    const { confirmPassword, ...formDataWithoutConfirmPassword } = formData;
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/register`, {
         method: 'POST',
@@ -43,13 +43,17 @@ export default function RegisterViaEmail() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...formData }),
+        body: JSON.stringify({ ...formDataWithoutConfirmPassword }),
       });
       const data = await response.json();
 
       if (response.ok) {
         console.log('Register successfully')
-        router.push('/mybill')
+        signIn("credentials", {
+          username: data.username,
+          password: data.password,
+          callbackUrl: "/mybill",
+        })
 
         // Handle successful login, e.g., redirect to another page
       } else {
@@ -105,12 +109,6 @@ export default function RegisterViaEmail() {
       return
     } else {
       handleRegistration(data);
-      // complete register??
-      signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        callbackUrl: "/mybill",
-      })
     }
   }
 
