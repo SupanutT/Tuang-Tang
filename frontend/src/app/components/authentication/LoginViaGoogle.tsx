@@ -8,14 +8,14 @@ type Props = {
 export default function LoginViaGoogle({ callbackUrl = "/" }: Props) {
   return (
     <button
-      className="w-full h-[40px] bg-[#F1F5F9] border border-[#CBD5E1] rounded-md flex items-center px-[20px] md:text-base"
+      className="w-full h-[40px] bg-[#F1F5F9] border border-[#CBD5E1] rounded-md flex items-center px-[20px] md:text-base opacity-[30%]"
       onClick={() =>
         signIn("google", {
           callbackUrl,
         })
       }>
       <div>
-        <Image src={"/logos/google-logo.svg"} width={20} height={20} alt="google logo" />
+        <Image src={"/svg/google-logo.svg"} width={20} height={20} alt="google logo" />
       </div>
       <p className="w-full font-normal font-sm leading-5">เข้าสู่ระบบด้วยบัญชี Google</p>
     </button>

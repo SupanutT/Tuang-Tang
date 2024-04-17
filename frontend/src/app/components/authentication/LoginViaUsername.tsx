@@ -3,6 +3,7 @@ import Input from "./Input"
 import PasswordInput from "./PasswordInput"
 import { useState } from "react"
 import { signIn } from "next-auth/react"
+import PrimaryButton from "../PrimaryButton"
 
 type Error = {
   username: string
@@ -24,6 +25,9 @@ export default function LoginViaUsername() {
     username: "",
     password: "",
   })
+
+  const [isDisabled, setDisabled] = useState(false);
+  const [primaryLoading, setPrimaryLoading] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
@@ -58,9 +62,15 @@ export default function LoginViaUsername() {
   const handleValidation = async () => {
     // event.preventDefault()
     // console.log(event.target)
+    setPrimaryLoading((prev) => !prev);
+    setDisabled(true);
     const { errors, success } = validateForm()
     if (!success) {
-      setErrors(errors)
+      setTimeout(() => {
+        setErrors(errors)
+        setPrimaryLoading((prev) => !prev);
+        setDisabled(false);
+      }, 1000);
       return
     } else {
       signIn("credentials", {
@@ -92,11 +102,15 @@ export default function LoginViaUsername() {
         warning={errors.password}
       />
 
-      <button
+      <PrimaryButton
         type="submit"
-        className="w-full bg-[#334155] hover:bg-slate-600 rounded-lg text-white mt-[30px] px-[16px] py-[8px] text-md ">
+        isDisabled={isDisabled}
+        className="w-full bg-[#334155] hover:bg-slate-600 text-center cursor-pointer rounded-lg text-white mt-[30px] px-[16px] py-[8px] text-base md:text-lg"
+        isLoading={primaryLoading}
+        loadingMessage="Waiting"
+      >
         Sign in
-      </button>
+      </PrimaryButton>
 
       <p className="w-full text-center text-sm mt-[10px]">
         No account? {" "}

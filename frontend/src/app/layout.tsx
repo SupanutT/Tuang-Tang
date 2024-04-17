@@ -36,6 +36,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <title>Tuang Tang</title>
+      <head>
+        <link rel="shortcut icon" type="x-icon" href="/img/icon.png" />
+      </head>
 
       <body className={cn(
         inter.className,
