@@ -55,7 +55,7 @@ export default function PasswordInput({
       {value.length >= 1 && (
         <div className="opacity-70 cursor-pointer flex items-center absolute right-2 top-[37px]">
           <Image
-            src={showPassword ? "/icons/eye-open.svg" : "/icons/eye-close.svg"}
+            src={showPassword ? "/svg/eye-open.svg" : "/svg/eye-close.svg"}
             width={20}
             height={20}
             alt="eye"

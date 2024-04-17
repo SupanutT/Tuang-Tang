@@ -5,6 +5,8 @@ import ConfirmPasswordInput from "./ConfirmPasswordInput"
 import { useState, FormEvent } from "react"
 import { useRouter } from "next/navigation"
 import { signIn } from "next-auth/react"
+import userRegister from "@/libs/userRegister"
+import PrimaryButton from "../PrimaryButton"
 
 type FormData = {
   name: string
@@ -25,45 +27,30 @@ const defaultFormData = {
 export default function RegisterViaEmail() {
 
   const [data, setFormData] = useState<FormData>(structuredClone(defaultFormData))
-  const router = useRouter()
-
-  const [checkBoxError, setCheckBoxError] = useState({
-    checkOne: false,
-  })
+  const [isDisabled, setDisabled] = useState(false);
+  const [primaryLoading, setPrimaryLoading] = useState(false);
 
   const [errors, setErrors] = useState<FormData>(structuredClone(defaultFormData))
 
 
   const handleRegistration = async (formData: FormData) => {
     const { confirmPassword, ...formDataWithoutConfirmPassword } = formData;
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/register`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...formDataWithoutConfirmPassword }),
-      });
-      const data = await response.json();
 
-      if (response.ok) {
-        console.log('Register successfully')
-        signIn("credentials", {
-          username: data.username,
-          password: data.password,
-          callbackUrl: "/mybill",
-        })
+    const user = await userRegister(formDataWithoutConfirmPassword)
 
-        // Handle successful login, e.g., redirect to another page
-      } else {
-        console.error('Register failed');
-        // Handle failed login, e.g., show an error message
-      }
-    } catch (error) {
-      console.error('Error during register:', error);
-      // Handle network errors or other issues
+    if (user.ok) {
+      await signIn("credentials", {
+        username: data.username,
+        password: data.password,
+        callbackUrl: "/mybill",
+      })
+      console.log('Register successfully')
+      // Handle successful login, e.g., redirect to another page
+    } else {
+      console.error('Register failed');
+      // Handle failed login, e.g., show an error message
     }
+
   }
 
 
@@ -101,11 +88,17 @@ export default function RegisterViaEmail() {
   }
 
   const handleValidationForm = async () => {
+    setPrimaryLoading((prev) => !prev);
+    setDisabled(true);
     const validationErrors = await validateForm()
     const haveErrors = Object.values(validationErrors).some((x) => x !== null && x !== "")
 
     if (haveErrors) {
-      setErrors(validationErrors)
+      setTimeout(() => {
+        setErrors(validationErrors);
+        setPrimaryLoading((prev) => !prev);
+        setDisabled(false);
+      }, 1000);
       return
     } else {
       handleRegistration(data);
@@ -118,13 +111,6 @@ export default function RegisterViaEmail() {
       [event.target.name]: event.target.value,
     })
     // console.log(data)
-  }
-
-  const handleCheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCheckBoxError({
-      ...checkBoxError,
-      [event.target.name]: event.target.checked,
-    })
   }
 
   return (
@@ -174,37 +160,15 @@ export default function RegisterViaEmail() {
           warning={errors.confirmPassword}
         />
 
-        <div className="mt-[30px] w-full relative">
-          {/* Link ไป ข้อตกลงและเงื่อนไขการใช้งานของ SkillBridge และ นโยบายคุ้มครองความเป็นส่วนตัว*/}
-          <input
-            type="checkbox"
-            name="checkOne"
-            id="checkOne"
-            className="absolute left-0 top-1 border
-                                    border-[#848484]
-                                    accent-[#334155]
-                                    cursor-pointer
-                                    rounded-sm
-                                    md:top-1
-                                    "
-            onChange={(e) => {
-              handleCheckBoxChange(e)
-            }}
-            required
-          />
-          <label htmlFor="checkOne" className="block text-[9.5px] pl-[20px] cursor-pointer md:text-sm">
-            ฉันได้อ่านและยอมรับ
-            <Link href={"/"} className="text-[#326FE2] hover:underline hover:underline-offset">
-              ข้อตกลงและเงื่อนไขการใช้งานของ SkillBridge
-            </Link>
-          </label>
-        </div>
-
-        <button
+        <PrimaryButton
+          type="submit"
+          isDisabled={isDisabled}
           className="w-full bg-[#334155] hover:bg-slate-600 text-center cursor-pointer rounded-lg text-white mt-[30px] px-[16px] py-[8px] text-base md:text-lg"
+          isLoading={primaryLoading}
+          loadingMessage="Waiting"
         >
           Sign Up
-        </button>
+        </PrimaryButton>
 
         <p className="w-full text-center text-sm mt-[10px] md:text-base">
           Already have an account?{" "}

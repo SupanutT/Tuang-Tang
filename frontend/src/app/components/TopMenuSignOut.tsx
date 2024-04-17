@@ -9,7 +9,7 @@ export default function TopMenuSignOut() {
 
     const { data: session } = useSession()
 
-    // console.log(session);
+    console.log(session?.user);
 
     const handleSignOut = () => {
         signOut({
@@ -27,6 +27,7 @@ export default function TopMenuSignOut() {
             onClick={() => { handleSignOut() }} >
             {`Sign-out of ${session?.user?.name}`}
         </div>
+        // have no name?????
     );
 
 }

@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 
 export default function ConfirmPasswordInput({
@@ -18,7 +17,7 @@ export default function ConfirmPasswordInput({
   };
 
   return (
-    <div className="w-full mt-[12px] relative">
+    <div className="w-full mt-[12px] relative mb-[20px]">
       <label
         htmlFor="confirmPassword"
         className="text-sm leading-5 mb-[5px] inline-block md:text-base"
@@ -53,7 +52,7 @@ export default function ConfirmPasswordInput({
       {value.length >= 1 && (
         <div className="opacity-70 cursor-pointer flex items-center absolute right-2 top-[37px]">
           <Image
-            src={showPassword ? "/icons/eye-open.svg" : "/icons/eye-close.svg"}
+            src={showPassword ? "/svg/eye-open.svg" : "/svg/eye-close.svg"}
             width={20}
             height={20}
             alt="eye"

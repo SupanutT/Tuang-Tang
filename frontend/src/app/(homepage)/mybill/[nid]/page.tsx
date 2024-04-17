@@ -1,11 +1,10 @@
 import Table from "@/app/components/Table";
-import Link from "next/link";
 import getBill from "@/libs/getBill";
 
 export default async function MyBillDetailPage({ params }: { params: { nid: string } }) {
 
     const data = await getBill({ params });
-    console.log(data)
+    // console.log(data)
     // const data =
     // {
     //     _id: "sadkfhalkjdahasdfasdfasdf",
