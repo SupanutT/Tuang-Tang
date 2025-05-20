@@ -19,8 +19,8 @@ export default function BillSummary({ all_dividers, owner_name, billItems }: { a
         const billList: BillList = {}
         billItems.map((menu: BillItem) => {
             if (menu.dividers.includes(name)) {
-                const price = (menu.price / menu.dividers.length) * 100 % 100 != 0 ? Number((menu.price / menu.dividers.length).toFixed(2)) : Number((menu.price / menu.dividers.length).toFixed(0))
-                console.log(price)
+                const price = ((menu.price * menu.quantity) / menu.dividers.length) * 100 % 100 != 0 ? Number(((menu.price * menu.quantity) / menu.dividers.length).toFixed(2)) : Number(((menu.price * menu.quantity) / menu.dividers.length).toFixed(0))
+                // console.log(price)
                 billList[menu.menu] = price;
                 billResult += price;
             }

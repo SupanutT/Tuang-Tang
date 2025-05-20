@@ -9,10 +9,10 @@ export default function Login() {
     <div className="flex flex-col w-[300px] mt-[40px]">
       <Title title="Sign in" highlightText="" highlightColor="" />
 
-      <div className="mt-[30px] text-[#64748B] leading-6 text-sm w-full">
+      {/* <div className="mt-[30px] text-[#64748B] leading-6 text-sm w-full">
         <LoginViaGoogle />
         <Line />
-      </div>
+      </div> */}
 
       {/* Login via Email Component */}
       <LoginViaUsername />

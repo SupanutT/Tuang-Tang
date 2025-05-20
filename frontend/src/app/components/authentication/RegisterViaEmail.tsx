@@ -34,11 +34,13 @@ export default function RegisterViaEmail() {
 
 
   const handleRegistration = async (formData: FormData) => {
+    // console.log(formData);
     const { confirmPassword, ...formDataWithoutConfirmPassword } = formData;
 
     const user = await userRegister(formDataWithoutConfirmPassword)
+    // console.log(user);
 
-    if (user.ok) {
+    if (user) {
       await signIn("credentials", {
         username: data.username,
         password: data.password,

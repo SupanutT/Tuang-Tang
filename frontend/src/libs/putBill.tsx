@@ -1,14 +1,12 @@
 import { Bill } from "../../interfaces";
 export default async function putBill(data: Bill) {
-    console.log({ data })
+    console.log({ data }, "putBillData")
 
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/bills/${data._id}`, {
             method: "PUT",
-            credentials: "include",
             headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 data: {
@@ -23,7 +21,7 @@ export default async function putBill(data: Bill) {
             }),
         })
         const res = await response.json();
-        console.log(res)
+        console.log(res, "putBillResponse")
         return res
 
     } catch (error) {

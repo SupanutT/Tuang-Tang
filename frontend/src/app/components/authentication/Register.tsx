@@ -13,10 +13,10 @@ export default function Register() {
       <div className="flex flex-col w-[280px] mt-[15px]">
         <Title title="Sign up" highlightText="" highlightColor="" />
 
-        <div className="mt-[25px] text-[#64748B] leading-6 text-sm w-full">
+        {/* <div className="mt-[25px] text-[#64748B] leading-6 text-sm w-full">
           <LoginViaGoogle callbackUrl="/register" />
           <Line />
-        </div>
+        </div> */}
 
         <RegisterViaEmail />
       </div>

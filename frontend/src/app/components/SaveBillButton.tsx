@@ -14,10 +14,11 @@ export default function SaveBillButton({ data }: { data: Bill }) {
             billItems: data.billItems
         }
         const response = await putBill(billData);
+        console.log(response, "putResponse");
     }
     return (
         <div className="fixed bottom-8 right-8">
-            <button type="button" className="h-[50px] bg-zinc-800 px-[20px] text-white rounded-lg" onClick={() => handleSave()}>
+            <button type="button" className="h-[50px] bg-zinc-800 px-[20px] text-white rounded-lg cursor-pointer" onClick={() => { console.log(data); handleSave() }}>
                 Save
             </button>
         </div>

@@ -7,7 +7,6 @@ import { Bill } from "../../../interfaces";
 import { BillItem } from "../../../interfaces";
 import { setBill } from "@/redux/features/billSlice";
 import BillSummary from "./BillSummary";
-import putBill from "@/libs/putBill";
 import SaveBillButton from "./SaveBillButton";
 // import { useDispatch } from "react-redux";
 // import { AppDispatch } from "@/redux/store";
@@ -31,7 +30,8 @@ export const useBillContext = () => {
 
 
 export default function Table({ data }: { data: Bill }) {
-	console.log('Table component rendered');
+	// console.log('Table component rendered');
+	// console.log(data);
 
 	const billItemReducer = (
 		billItems: BillItem[],
@@ -238,7 +238,6 @@ export default function Table({ data }: { data: Bill }) {
 	// 	}
 	// 	dispatch(setBill(updatedBill));
 
-
 	// }
 
 	const allFunctions = {
@@ -247,6 +246,8 @@ export default function Table({ data }: { data: Bill }) {
 		handleDeleteMenu: handleDeleteMenu,
 		handleEditCell: handleEditCell
 	}
+
+	// console.log('billItem', billItems)
 
 	return (
 		<BillContext.Provider value={allFunctions}>
@@ -259,9 +260,22 @@ export default function Table({ data }: { data: Bill }) {
 
 					<tbody>
 						<TableBody owner_name={data.owner_name} all_dividers={all_dividers} all_billItems={billItems} />
+						{/* Total price */}
+						<tr>
+							<td className="p-0">
+								<div className="flex flex-row-reverse items-center py-2 px-3 opacity-50 bg-black text-white ">
+									<div className="flex-shrink-0 text-md text-white py-2 px-2 rounded">
+										total price: {billItems.reduce((acc, item) => {
+											const price = item.price * item.quantity;
+											return acc + price;
+										}, 0)}
+									</div>
+								</div>
+							</td>
+						</tr>
 					</tbody>
 
-
+					{/* Add new menu */}
 					<tbody className="flex items-center border-b border-teal-500 py-3 bg-black ">
 						<tr>
 							<td>
@@ -309,9 +323,10 @@ export default function Table({ data }: { data: Bill }) {
 
 					</tbody>
 
+					{/* Add new divider */}
 					<tbody>
 						<tr>
-							<td>
+							<td className="p-0">
 								<div className="flex items-center border-b border-teal-500 py-2 px-3 bg-white opacity-50">
 									<input className="appearance-none bg-transparent border-none w-full text-gray-800 mr-10% py-2 px-2 leading-tight focus:outline-none " type="text" placeholder="New Divider" value={newDivider} onChange={(e) => {
 										setNewDivider(e.target.value);
