@@ -78,7 +78,6 @@ export default function LoginViaUsername() {
         password: form.password,
         callbackUrl: "/mybill",
       })
-
     }
   }
 

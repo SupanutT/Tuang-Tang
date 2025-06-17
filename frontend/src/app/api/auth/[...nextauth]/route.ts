@@ -2,12 +2,14 @@ import NextAuth from "next-auth/next";
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import userLogIn from "@/libs/userLogIn";
+import { JWT, JWT as NextAuthJWT } from 'next-auth/jwt';
 
 interface Token {
     message: string;
     accessToken: string;
     refreshToken: string;
     accessTokenExpires: number,
+    userName: string;
     expiredIn: number;
     iat: number;
     exp: number;
@@ -15,9 +17,9 @@ interface Token {
 }
 
 
-async function refreshAccessToken(token: Token) {
+async function refreshAccessToken(token: JWT): Promise<JWT> {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/refreshToken`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/refreshToken`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -26,17 +28,23 @@ async function refreshAccessToken(token: Token) {
                 refreshToken: token.refreshToken
             }),
         })
-        const response = await res.json();
+        const refreshedTokens = await response.json();
+
+        if (!response.ok) {
+            throw refreshedTokens;
+        }
+
         // console.log(response)
         return {
             ...token,
-            accessToken: response.accessToken,
-            refreshToken: response.refreshToken,
-            expiredIn: response.expiredIn,
-            accessTokenExpires: Date.now() + response.expiredIn * 1000
-        }
+            accessToken: refreshedTokens.accessToken,
+            refreshToken: refreshedTokens.refreshToken,
+            expiredIn: refreshedTokens.expiredIn,
+            accessTokenExpires: Date.now() + refreshedTokens.expiredIn * 1000,
+            userName: refreshedTokens.userName,
+        } as JWT
     } catch (e) {
-        return { ...token }
+        return { ...token, error: "RefreshAccessTokenError" };
     }
 }
 
@@ -60,8 +68,10 @@ export const authOptions: AuthOptions = {
 
                 const tokenData = await userLogIn(credentials.username, credentials.password);
                 if (tokenData) {
+                    console.log("tokenData from login", tokenData)
                     return tokenData;
                 } else {
+                    // console.log("tokenData from login: null")
                     return null
                 }
             }
@@ -73,14 +83,22 @@ export const authOptions: AuthOptions = {
     },
     callbacks: {
         async jwt({ token, user }) {
-            if (user && 'expiredIn' in user) {
-                return {
-                    ...user,
-                    accessTokenExpires: Date.now() + user.expiredIn * 1000
-                }
+            if (user) {
+                const initialToken: JWT = {
+                    accessToken: user.accessToken,
+                    refreshToken: user.refreshToken,
+                    accessTokenExpires: Date.now() + user.expiredIn * 1000,
+                    expiredIn: user.expiredIn,
+                    userName: user.userName,
+                    name: user.name || null,
+                    email: user.email || null,
+                    picture: user.image || null,
+                };
+                return initialToken;
             }
-            if (Date.now() < token.accessTokenExpires) {
-                return token
+
+            if (token.accessTokenExpires && Date.now() < token.accessTokenExpires) {
+                return token;
             }
             return await refreshAccessToken(token)
 
@@ -89,6 +107,7 @@ export const authOptions: AuthOptions = {
             if (token) {
                 session.accessToken = token.accessToken as string;
                 session.expiresAt = token.accessTokenExpires as number;
+                session.userName = token.userName as string;
             }
             return session;
         },

@@ -13,7 +13,7 @@ export default async function TopMenu() {
                 <img src={'/img/icon.png'} alt='logo' className='h-[100%] w-auto' />
             </Link>
             <TopMenuItem title='My Bill' pageRef='mybill' />
-            <TopMenuItem title='Other Bill' pageRef='otherbill' />
+            {/* <TopMenuItem title='Other Bill' pageRef='otherbill' /> */}
             <TopMenuSignOut />
 
         </div>

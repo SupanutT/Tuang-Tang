@@ -9,8 +9,6 @@ export default function TopMenuSignOut() {
 
     const { data: session } = useSession()
 
-    console.log(session?.user);
-
     const handleSignOut = () => {
         signOut({
             redirect: false,
@@ -25,7 +23,7 @@ export default function TopMenuSignOut() {
 
         <div className="px-[20px] h-[100%] hover:bg-yellow-100 flex justify-center items-center font-serif text-sm text-black cursor-pointer absolute right-0"
             onClick={() => { handleSignOut() }} >
-            {`Sign-out of ${session?.user?.name}`}
+            {`Sign-out of ${session?.userName}`}
         </div>
         // have no name?????
     );

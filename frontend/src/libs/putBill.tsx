@@ -21,7 +21,6 @@ export default async function putBill(data: Bill) {
             }),
         })
         const res = await response.json();
-        console.log(res, "putBillResponse")
         return res
 
     } catch (error) {
